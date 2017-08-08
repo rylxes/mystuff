@@ -1,0 +1,16 @@
+{{diagnostic}}
+<h1>Add my stuff</h1>
+<form [formGroup]="addStuff">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input class="form-control" formControlName="name" id="name" required />
+  </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <input class="form-control" id="description" />
+  </div>
+  <div class="form-group">
+    <label for="categories">Categories</label>
+    <input class="form-control" id="categories" />
+  </div>
+</form>
