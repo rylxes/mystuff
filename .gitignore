@@ -6,6 +6,7 @@
 *.launch
 .settings/
 *.sublime-workspace
+*.iml
 
 # System Files
 .DS_Store
