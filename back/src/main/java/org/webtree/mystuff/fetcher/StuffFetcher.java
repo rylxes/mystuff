@@ -30,7 +30,7 @@ public class StuffFetcher {
     public Stuff add(TypedValueMap arguments) {
         val stuff = new Stuff();
         stuff.setId(arguments.get("id"));
-        stuff.setId(arguments.get("name"));
+        stuff.setName(arguments.get("name"));
         stuffList.put(stuff.getId(), stuff);
         return stuff;
     }

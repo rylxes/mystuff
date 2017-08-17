@@ -3,12 +3,17 @@ package org.webtree.mystuff.fields;
 import com.merapar.graphql.GraphQlFields;
 import graphql.Scalars;
 import graphql.schema.*;
+import graphql.schema.idl.RuntimeWiring;
+import graphql.schema.idl.SchemaGenerator;
+import graphql.schema.idl.SchemaParser;
+import graphql.schema.idl.TypeDefinitionRegistry;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.webtree.mystuff.fetcher.StuffFetcher;
 
 import javax.annotation.PostConstruct;
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +22,7 @@ import static com.merapar.graphql.base.GraphQlFieldsHelper.*;
 import static com.merapar.graphql.base.GraphQlFieldsHelper.INPUT;
 import static com.merapar.graphql.base.GraphQlFieldsHelper.getInputMap;
 import static graphql.Scalars.GraphQLInt;
+import static graphql.Scalars.GraphQLLong;
 import static graphql.Scalars.GraphQLString;
 import static graphql.schema.GraphQLArgument.newArgument;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
@@ -63,21 +69,21 @@ public class StuffFields implements GraphQlFields {
             .build();
 
         addStuffInputType = newInputObject().name("addStuffInput")
-            .field(newInputObjectField().name("id").type(new GraphQLNonNull(GraphQLInt)).build())
+            .field(newInputObjectField().name("id").type(new GraphQLNonNull(GraphQLLong)).build())
             .field(newInputObjectField().name("name").type(new GraphQLNonNull(Scalars.GraphQLString)).build())
             .build();
 
         updateStuffInputType = newInputObject().name("updateStuffInput")
-            .field(newInputObjectField().name("id").type(new GraphQLNonNull(GraphQLInt)).build())
+            .field(newInputObjectField().name("id").type(new GraphQLNonNull(GraphQLLong)).build())
             .field(newInputObjectField().name("name").type(GraphQLString).build())
             .build();
 
         deleteStuffInputType = newInputObject().name("deleteStuffInput")
-            .field(newInputObjectField().name("id").type(new GraphQLNonNull(GraphQLInt)).build())
+            .field(newInputObjectField().name("id").type(new GraphQLNonNull(GraphQLLong)).build())
             .build();
 
         filterStuffInputType = newInputObject().name("filterStuffInput")
-            .field(newInputObjectField().name("id").type(GraphQLInt).build())
+            .field(newInputObjectField().name("id").type(GraphQLLong).build())
             .build();
     }
 
