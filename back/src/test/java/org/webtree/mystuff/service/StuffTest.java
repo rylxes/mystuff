@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = TestConf.class)
+@ContextConfiguration(classes = GraphQlConf.class)
 @WebMvcTest(GraphQlControllerImpl.class)
 public class StuffTest {
     @Autowired

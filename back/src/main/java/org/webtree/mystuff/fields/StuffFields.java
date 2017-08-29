@@ -32,8 +32,7 @@ import static graphql.schema.GraphQLObjectType.newObject;
 
 @Component
 public class StuffFields implements GraphQlFields {
-    @Autowired
-    private StuffFetcher stuffFetcher;
+    private final StuffFetcher stuffFetcher;
 
     private GraphQLObjectType stuffType;
 
@@ -53,6 +52,10 @@ public class StuffFields implements GraphQlFields {
 
     @Getter
     private List<GraphQLFieldDefinition> mutationFields;
+
+    @Autowired public StuffFields(StuffFetcher stuffFetcher) {
+        this.stuffFetcher = stuffFetcher;
+    }
 
     @PostConstruct
     public void postConstruct() {
