@@ -9,20 +9,23 @@ import org.webtree.mystuff.boot.App;
 import org.webtree.mystuff.domain.Stuff;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { App.class})
 public class StuffServiceTest {
     private static final long ID = 123L;
+    public static final String NAME = "test name";
     @Autowired
     private StuffService stuffService;
 
     @Test
     public void testAddAndGetStuff() throws Exception {
         assertThat(stuffService.getById(ID)).isNull();
-        Stuff stuff = new Stuff().setName("test name");
-        stuffService.addStuff(stuff);
-        assertThat(stuffService.getById(ID).getId()).isNull();
+        Stuff stuff = new Stuff().setName(NAME);
+        Stuff addedStuff = stuffService.addStuff(stuff);
+        assertThat(addedStuff.getId()).isNotNull();
+        Stuff byId = stuffService.getById(addedStuff.getId());
+        assertThat(byId).isNotNull();
+        assertThat(byId.getName()).isEqualTo(NAME);
     }
 }
