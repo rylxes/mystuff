@@ -25,7 +25,9 @@
     "core-js": "^2.4.1",
     "ngx-bootstrap": "^1.8.1",
     "rxjs": "^5.4.1",
-    "zone.js": "^0.8.14"
+    "zone.js": "^0.8.14",
+    "apollo-client": "1.9.1",
+    "apollo-angular": "0.13.0"
   },
   "devDependencies": {
     "@angular/cli": "1.2.6",

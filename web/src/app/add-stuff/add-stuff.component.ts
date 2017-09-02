@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 import {Stuff} from "../model/Stuff";
-import {Category} from "../model/Category";
 import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
@@ -14,7 +13,19 @@ export class AddStuffComponent implements OnInit {
   model: Stuff = new Stuff(0, "", "", []);
 
   constructor(private fb: FormBuilder) {
+    this.stuffFormInit();
+  }
 
+  stuffFormInit() {
+    this.addStuff = this.fb.group({
+      name: '',
+      description: '',
+      categories: this.fb.array([])
+    });
+  }
+
+  save() {
+    console.log(this.addStuff.value);
   }
 
   ngOnInit() {

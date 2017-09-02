@@ -1,9 +1,19 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {ApolloClient} from 'apollo-client';
 
-import { AppComponent } from './app.component';
-import { AddStuffComponent } from './add-stuff/add-stuff.component';
-import { AlertModule } from 'ngx-bootstrap';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+
+import {AppComponent} from './app.component';
+import {AddStuffComponent} from './add-stuff/add-stuff.component';
+import {AlertModule} from 'ngx-bootstrap';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+
+// Create the client as outlined above
+const client = new ApolloClient();
+
+export function provideClient(): ApolloClient {
+  return client;
+}
 
 @NgModule({
   declarations: [
@@ -12,6 +22,8 @@ import { AlertModule } from 'ngx-bootstrap';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
     AlertModule.forRoot()
   ],
   providers: [],
