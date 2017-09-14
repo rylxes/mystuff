@@ -1,10 +1,7 @@
 package org.webtree.mystuff.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.webtree.mystuff.domain.Stuff;
 import org.webtree.mystuff.service.StuffService;
 
@@ -17,8 +14,13 @@ public class StuffController {
         this.stuffService = stuffService;
     }
 
-    @PostMapping("/add")
-    public Stuff addStuff(@RequestBody Stuff stuff) {
+    @PostMapping
+    public Stuff add(@RequestBody Stuff stuff) {
         return stuffService.addStuff(stuff);
+    }
+
+    @GetMapping("/{id}")
+    public Stuff get(@PathVariable Long id) {
+        return stuffService.getById(id);
     }
 }
