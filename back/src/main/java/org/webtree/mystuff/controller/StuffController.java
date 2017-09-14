@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.webtree.mystuff.domain.Stuff;
 import org.webtree.mystuff.service.StuffService;
 
-@RestController("/rest/stuff")
+@RestController
+@RequestMapping("/rest/stuff")
 public class StuffController {
     private final StuffService stuffService;
 
