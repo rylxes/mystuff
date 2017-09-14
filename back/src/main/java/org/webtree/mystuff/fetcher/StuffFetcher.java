@@ -28,9 +28,10 @@ public class StuffFetcher {
     }
 
     public Stuff add(TypedValueMap arguments) {
-        val stuff = new Stuff();
-        stuff.setId(arguments.get("id"));
-        stuff.setName(arguments.get("name"));
+        val stuff = Stuff.builder()
+            .id(arguments.get("id"))
+            .name(arguments.get("name"))
+            .build();
         stuffList.put(stuff.getId(), stuff);
         return stuff;
     }

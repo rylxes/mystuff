@@ -21,7 +21,7 @@ public class StuffServiceTest {
     @Test
     public void testAddAndGetStuff() throws Exception {
         assertThat(stuffService.getById(ID)).isNull();
-        Stuff stuff = new Stuff().setName(NAME);
+        Stuff stuff = Stuff.builder().name(NAME).build();
         Stuff addedStuff = stuffService.addStuff(stuff);
         assertThat(addedStuff.getId()).isNotNull();
         Stuff byId = stuffService.getById(addedStuff.getId());

@@ -37,8 +37,8 @@ public class StuffTest {
 
     @Before
     public void setUp() throws Exception {
-        stuffFetcher.stuffList.put(1L, new Stuff().setId(1L).setName("stuff 1"));
-        stuffFetcher.stuffList.put(2L, new Stuff().setId(2L).setName("stuff 2"));
+        stuffFetcher.stuffList.put(1L, Stuff.builder().id(1L).name("stuff 1").build());
+        stuffFetcher.stuffList.put(2L, Stuff.builder().id(2L).name("stuff 2").build());
     }
 
     @Test
