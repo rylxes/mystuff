@@ -21,4 +21,8 @@ public class StuffService {
     public Stuff getById(long id) {
         return stuffRepository.findOne(id);
     }
+
+    public Iterable<Stuff> getList() {
+        return stuffRepository.findAll();
+    }
 }

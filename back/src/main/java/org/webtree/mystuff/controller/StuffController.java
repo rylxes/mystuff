@@ -23,4 +23,9 @@ public class StuffController {
     public Stuff get(@PathVariable Long id) {
         return stuffService.getById(id);
     }
+
+    @GetMapping("/list")
+    public Iterable<Stuff> getList() {
+        return stuffService.getList();
+    }
 }
