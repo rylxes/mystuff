@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddStuffComponent } from './add-stuff.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {BrowserModule} from "@angular/platform-browser";
 
 describe('AddStuffComponent', () => {
   let component: AddStuffComponent;
@@ -8,6 +10,7 @@ describe('AddStuffComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [BrowserModule, FormsModule, ReactiveFormsModule],
       declarations: [ AddStuffComponent ]
     })
     .compileComponents();

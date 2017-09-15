@@ -3,7 +3,7 @@ import {Stuff} from "../model/Stuff";
 import {FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
-  selector: 'app-add-stuff',
+  selector: 'add-stuff',
   templateUrl: './add-stuff.component.html',
   styleUrls: ['./add-stuff.component.css']
 })
