@@ -1,6 +1,7 @@
 import {Component, OnInit} from "@angular/core";
 import {Stuff} from "../model/Stuff";
 import {FormBuilder, FormGroup} from "@angular/forms";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'add-stuff',
@@ -12,7 +13,8 @@ export class AddStuffComponent implements OnInit {
   addStuff: FormGroup;
   model: Stuff = new Stuff(0, "", "", []);
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+              private http: HttpClient) {
     this.stuffFormInit();
   }
 
@@ -25,7 +27,10 @@ export class AddStuffComponent implements OnInit {
   }
 
   save() {
-    console.log(this.addStuff.value);
+    this.http.post("http://localhost:9000/rest/stuff", this.addStuff.value).subscribe(stuff => {
+      //TODO: update data
+      console.log(stuff);
+    });
   }
 
   ngOnInit() {
