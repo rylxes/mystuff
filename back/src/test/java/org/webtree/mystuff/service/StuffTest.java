@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,6 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = GraphQlConf.class)
 @WebMvcTest(GraphQlControllerImpl.class)
+@WithMockUser
 public class StuffTest {
     @Autowired
     private MockMvc mockMvc;
@@ -88,6 +90,7 @@ public class StuffTest {
 
         assertThat(stuffFetcher.stuffList.containsKey(key));
     }
+
     @Test
     public void update() throws Exception {
         // Given
@@ -140,7 +143,6 @@ public class StuffTest {
 
         assertThat(stuffFetcher.stuffList).containsKeys(1L);
     }
-
 
     private ResultActions performGraphQlPost(String query) throws Exception {
         return performGraphQlPost(query, null);

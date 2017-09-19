@@ -8,6 +8,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -25,6 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
 @AutoConfigureMockMvc
+@WithMockUser
 public class StuffControllerTest {
     private static final String NAME = "name example";
     @Autowired
@@ -78,5 +82,18 @@ public class StuffControllerTest {
             .andExpect(jsonPath("$[1].id").isNumber())
             .andExpect(jsonPath("$[0].name").value(NAME))
             .andExpect(jsonPath("$[1].name").value(name2));
+    }
+
+    @Test
+    @WithAnonymousUser
+    public void whenUnathorisedAccess_shouldThrowException() throws Exception {
+        mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
+        mockMvc.perform(post("/rest/stuff").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
+
+        Stuff stuff = Stuff.builder().name(NAME).build();
+        mockMvc.perform(get("/rest/stuff/1", objectMapper.writeValueAsString(stuff)).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isUnauthorized());
     }
 }

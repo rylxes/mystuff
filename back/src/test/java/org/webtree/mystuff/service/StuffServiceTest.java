@@ -11,7 +11,7 @@ import org.webtree.mystuff.domain.Stuff;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { App.class})
+@ContextConfiguration(classes = { App.class })
 public class StuffServiceTest {
     private static final long ID = 123L;
     public static final String NAME = "test name";
