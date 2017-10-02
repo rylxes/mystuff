@@ -20,3 +20,11 @@ server:
 #    maximumThreadPoolSizeSubscription: 20
 #    keepAliveTimeInSecondsSubscription: 30
 
+jwt:
+  header: Authorization
+  secret: mySecret
+  expiration: 604800
+  route:
+    authentication:
+      path: login
+      refresh: refresh

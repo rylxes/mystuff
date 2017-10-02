@@ -7,7 +7,6 @@ import org.webtree.mystuff.service.StuffService;
 
 @RestController
 @RequestMapping("/rest/stuff")
-@CrossOrigin
 public class StuffController {
     private final StuffService stuffService;
 

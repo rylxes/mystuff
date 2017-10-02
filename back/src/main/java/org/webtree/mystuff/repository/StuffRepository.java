@@ -9,6 +9,6 @@ import java.util.List;
 
 @Transactional
 public interface StuffRepository extends GraphRepository<Stuff> {
-    @Query("MATCH (n) RETURN n;")
+    @Query("MATCH (stuff: Stuff) RETURN stuff;")
     List<Stuff> getAll();
 }

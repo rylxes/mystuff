@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {Stuff} from "../model/Stuff";
+import {Stuff} from "../_models/Stuff";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 

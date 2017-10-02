@@ -1,21 +1,11 @@
 package org.webtree.mystuff.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
-import org.webtree.mystuff.boot.App;
 import org.webtree.mystuff.domain.Stuff;
 import org.webtree.mystuff.service.StuffService;
 
@@ -25,18 +15,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = App.class)
-@AutoConfigureMockMvc
 @WithMockUser
-public class StuffControllerTest {
+public class StuffControllerTest extends BaseControllerTest {
     private static final String NAME = "name example";
-    @Autowired
-    private MockMvc mockMvc;
 
     @SpyBean
     public StuffService stuffService;
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     public void whenAddStuff_shouldReturnNewId() throws Exception {
@@ -68,7 +52,6 @@ public class StuffControllerTest {
     }
 
     @Test
-    @Transactional
     public void whenGetStuffList_shouldReturnListOfStuffs() throws Exception {
         String name2 = NAME + "2";
         addStuff(Stuff.builder().name(NAME).build());
@@ -86,14 +69,14 @@ public class StuffControllerTest {
 
     @Test
     @WithAnonymousUser
-    public void whenUnathorisedAccess_shouldThrowException() throws Exception {
+    public void whenAnonimousUser_shouldResponseForbidden() throws Exception {
         mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isUnauthorized());
+            .andExpect(status().isForbidden());
         mockMvc.perform(post("/rest/stuff").contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isUnauthorized());
+            .andExpect(status().isForbidden());
 
         Stuff stuff = Stuff.builder().name(NAME).build();
         mockMvc.perform(get("/rest/stuff/1", objectMapper.writeValueAsString(stuff)).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isUnauthorized());
+            .andExpect(status().isForbidden());
     }
 }
