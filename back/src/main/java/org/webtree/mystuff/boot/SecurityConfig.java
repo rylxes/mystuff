@@ -7,22 +7,31 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.webtree.mystuff.security.JwtAuthenticationEntryPoint;
+import org.webtree.mystuff.security.JwtAuthenticationTokenFilter;
+import org.webtree.mystuff.security.JwtTokenUtil;
+import org.webtree.mystuff.service.UserService;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//    @Autowired
-//    private JwtAuthenticationEntryPoint unauthorizedHandler;
+
+    private final UserService userService;
+    private final JwtTokenUtil tokenUtil;
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    public SecurityConfig(UserService userService, JwtTokenUtil tokenUtil, JwtAuthenticationEntryPoint unauthorizedHandler) {
+        this.userService = userService;
+        this.tokenUtil = tokenUtil;
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
-            .userDetailsService(this.userDetailsService)
+            .userDetailsService(this.userService)
 //            .passwordEncoder(passwordEncoder())
         ;
     }
@@ -32,10 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
-//        return new JwtAuthenticationTokenFilter();
-//    }
+    @Bean
+    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
+        return new JwtAuthenticationTokenFilter(userService, tokenUtil);
+    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -43,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             // we don't need CSRF because our token is invulnerable
             .csrf().disable()
 
-//            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+            .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
             // don't create session
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -51,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-            .antMatchers("/rest/login").permitAll()
+            .antMatchers("/rest/token/new", "/rest/user/register").permitAll()
             .anyRequest().authenticated();
 
         // Custom JWT based security filter

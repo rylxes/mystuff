@@ -69,14 +69,14 @@ public class StuffControllerTest extends BaseControllerTest {
 
     @Test
     @WithAnonymousUser
-    public void whenAnonimousUser_shouldResponseForbidden() throws Exception {
+    public void whenAnonymousUser_shouldResponseForbidden() throws Exception {
         mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isForbidden());
+            .andExpect(status().isUnauthorized());
         mockMvc.perform(post("/rest/stuff").contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isForbidden());
+            .andExpect(status().isUnauthorized());
 
         Stuff stuff = Stuff.builder().name(NAME).build();
         mockMvc.perform(get("/rest/stuff/1", objectMapper.writeValueAsString(stuff)).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isForbidden());
+            .andExpect(status().isUnauthorized());
     }
 }
