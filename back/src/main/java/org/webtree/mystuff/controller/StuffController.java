@@ -5,8 +5,11 @@ import org.springframework.web.bind.annotation.*;
 import org.webtree.mystuff.domain.Stuff;
 import org.webtree.mystuff.service.StuffService;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/rest/stuff")
+@CrossOrigin
 public class StuffController {
     private final StuffService stuffService;
 
@@ -25,7 +28,7 @@ public class StuffController {
     }
 
     @GetMapping("/list")
-    public Iterable<Stuff> getList() {
-        return stuffService.getList();
+    public Iterable<Stuff> getList(Principal principal) {
+        return stuffService.getUserStuff(principal.getName());
     }
 }

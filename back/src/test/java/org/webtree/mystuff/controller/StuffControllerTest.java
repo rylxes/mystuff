@@ -1,5 +1,7 @@
 package org.webtree.mystuff.controller;
 
+import com.google.common.collect.Sets;
+import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
@@ -7,7 +9,10 @@ import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.ResultActions;
 import org.webtree.mystuff.domain.Stuff;
+import org.webtree.mystuff.domain.User;
 import org.webtree.mystuff.service.StuffService;
+
+import java.security.Principal;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -18,13 +23,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class StuffControllerTest extends BaseControllerTest {
     private static final String NAME = "name example";
+    private static final String USER_1 = "user1";
+
+    @Rule
+    public ClearGraphDBRule clearGraphDBRule = new ClearGraphDBRule();
 
     @SpyBean
     public StuffService stuffService;
 
     @Test
     public void whenAddStuff_shouldReturnNewId() throws Exception {
-        Stuff stuff = Stuff.builder().name(NAME).build();
+        Stuff stuff = buildNewStuff(NAME, USER_1);
         addStuff(stuff)
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors").doesNotExist())
@@ -52,10 +61,12 @@ public class StuffControllerTest extends BaseControllerTest {
     }
 
     @Test
-    public void whenGetStuffList_shouldReturnListOfStuffs() throws Exception {
+    @WithMockUser
+    public void whenGetStuffList_shouldReturnListOfStuffs(Principal principal) throws Exception {
         String name2 = NAME + "2";
-        addStuff(Stuff.builder().name(NAME).build());
-        addStuff(Stuff.builder().name(name2).build());
+        String username = principal.getName();
+        addStuff(buildNewStuff(NAME, username));
+        addStuff(buildNewStuff(name2, username));
 
         mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -68,6 +79,21 @@ public class StuffControllerTest extends BaseControllerTest {
     }
 
     @Test
+    @WithMockUser(USER_1)
+    public void whenGetStuffList_shouldReturnOnlyUsersStuff() throws Exception {
+        addStuff(buildNewStuff(NAME + 1, USER_1));
+        addStuff(buildNewStuff(NAME + 2, "user2"));
+
+        mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.errors").doesNotExist())
+            .andExpect(jsonPath("$", hasSize(1)))
+            .andExpect(jsonPath("$[0].id").isNumber())
+            .andExpect(jsonPath("$[0].users", hasSize(1)))
+            .andExpect(jsonPath("$[0].users[0].username").value(USER_1));
+    }
+
+    @Test
     @WithAnonymousUser
     public void whenAnonymousUser_shouldResponseForbidden() throws Exception {
         mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
@@ -75,8 +101,12 @@ public class StuffControllerTest extends BaseControllerTest {
         mockMvc.perform(post("/rest/stuff").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnauthorized());
 
-        Stuff stuff = Stuff.builder().name(NAME).build();
+        Stuff stuff = buildNewStuff(NAME, USER_1);
         mockMvc.perform(get("/rest/stuff/1", objectMapper.writeValueAsString(stuff)).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnauthorized());
+    }
+
+    private Stuff buildNewStuff(String name, String username) {
+        return Stuff.builder().users(Sets.newHashSet(User.builder().username(username).build())).name(name).build();
     }
 }

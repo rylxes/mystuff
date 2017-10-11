@@ -3,15 +3,13 @@ package org.webtree.mystuff.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.webtree.mystuff.domain.User;
 import org.webtree.mystuff.service.UserService;
 
 @RestController
-@RequestMapping("rest/user")
+@RequestMapping("/rest/user")
+@CrossOrigin
 public class UserController {
     private UserService userService;
 
@@ -26,7 +24,7 @@ public class UserController {
         if (userService.loadUserByUsername(user.getUsername()) != null) {
             return ResponseEntity.badRequest().body("User already exists");
         } else {
-            return ResponseEntity.ok(userService.add(user));
+            return ResponseEntity.ok(userService.add(user.enable()));
         }
     }
 }

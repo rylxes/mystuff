@@ -25,4 +25,8 @@ public class StuffService {
     public Iterable<Stuff> getList() {
         return stuffRepository.findAll();
     }
+
+    public Iterable<Stuff> getUserStuff(String username) {
+        return stuffRepository.getUserStuff(username);
+    }
 }

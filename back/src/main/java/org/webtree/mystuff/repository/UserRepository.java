@@ -6,6 +6,6 @@ import org.springframework.data.repository.query.Param;
 import org.webtree.mystuff.domain.User;
 
 public interface UserRepository extends GraphRepository<User> {
-    @Query("MATCH (user: User {username:{username}}) RETURN user;")
+    @Query("MATCH (user:User{username:{username}}) RETURN user;")
     User findByUsername(@Param("username") String username);
 }

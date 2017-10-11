@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
-public abstract class BaseTest {
+public abstract class BaseSpringTest {
     @Autowired
     private ApplicationContext ctx;
 

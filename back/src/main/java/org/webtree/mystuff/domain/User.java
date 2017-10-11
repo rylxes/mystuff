@@ -1,7 +1,9 @@
 package org.webtree.mystuff.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +15,8 @@ import java.util.Date;
 @Data
 @NodeEntity
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
     private static final long serialVersionUID = -1640162851205761563L;
     @GraphId
@@ -29,6 +33,14 @@ public class User implements UserDetails {
     @Builder.Default
     private boolean enabled = true;
     private Date lastPasswordResetDate;
+
+    public User enable() {
+        accountNonLocked = true;
+        accountNotExpired = true;
+        credentialsNonExpired = true;
+        enabled = true;
+        return this;
+    }
 
     public Long getId() {
         return id;

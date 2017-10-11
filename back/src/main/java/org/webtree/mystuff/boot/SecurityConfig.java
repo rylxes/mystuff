@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.webtree.mystuff.security.JwtAuthenticationEntryPoint;
 import org.webtree.mystuff.security.JwtAuthenticationTokenFilter;
 import org.webtree.mystuff.security.JwtTokenUtil;
@@ -51,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
             // we don't need CSRF because our token is invulnerable
             .csrf().disable()
+            .cors().and()
 
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
 
@@ -64,8 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated();
 
         // Custom JWT based security filter
-//        httpSecurity
-//            .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
+        httpSecurity
+            .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
         // disable page caching
         httpSecurity.headers().cacheControl();
