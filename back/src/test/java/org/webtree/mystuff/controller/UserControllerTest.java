@@ -4,6 +4,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.webtree.mystuff.domain.User;
 import org.webtree.mystuff.service.UserService;
 
@@ -20,6 +21,7 @@ public class UserControllerTest extends BaseControllerTest {
     private UserService userService;
 
     @Test
+    @WithAnonymousUser
     public void whenRegisterUser_shouldCreateNewOne() throws Exception {
         mockMvc.perform(post("/rest/user/register")
             .contentType(MediaType.APPLICATION_JSON)

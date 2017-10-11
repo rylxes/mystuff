@@ -1,8 +1,11 @@
 package org.webtree.mystuff.controller;
 
+import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.webtree.mystuff.domain.Stuff;
+import org.webtree.mystuff.domain.User;
 import org.webtree.mystuff.service.StuffService;
 
 import java.security.Principal;
@@ -18,7 +21,8 @@ public class StuffController {
     }
 
     @PostMapping
-    public Stuff add(@RequestBody Stuff stuff) {
+    public Stuff add(@RequestBody Stuff stuff, Authentication authentication) {
+        stuff.setUsers(Sets.newHashSet((User) authentication.getPrincipal()));
         return stuffService.addStuff(stuff);
     }
 

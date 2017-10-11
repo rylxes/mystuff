@@ -16,6 +16,7 @@ import {AuthGuard} from "./_guards/auth.guard";
 import {AlertComponent} from "./_directives/alert.component";
 import {HttpModule} from "@angular/http";
 import {StuffListComponent} from './stuff-list/stuff-list.component';
+import {StuffService} from "./_services/stuff.service";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {StuffListComponent} from './stuff-list/stuff-list.component';
     AuthGuard,
     AlertService,
     AuthenticationService,
+    StuffService,
     UserService,
   ],
   bootstrap: [AppComponent]

@@ -7,12 +7,10 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.MvcResult;
 import org.webtree.mystuff.domain.Stuff;
 import org.webtree.mystuff.domain.User;
 import org.webtree.mystuff.service.StuffService;
-
-import java.security.Principal;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -34,19 +32,19 @@ public class StuffControllerTest extends BaseControllerTest {
     @Test
     public void whenAddStuff_shouldReturnNewId() throws Exception {
         Stuff stuff = buildNewStuff(NAME, USER_1);
-        addStuff(stuff)
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.id").isNumber())
-            .andExpect(jsonPath("$.name").value(NAME));
-    }
-
-    private ResultActions addStuff(Stuff stuff) throws Exception {
-        return mockMvc.perform(
+        MvcResult mvcResult = mockMvc.perform(
             post("/rest/stuff")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(stuff))
-        );
+        )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.errors").doesNotExist())
+            .andExpect(jsonPath("$.id").isNumber())
+            .andExpect(jsonPath("$.name").value(NAME))
+            .andExpect(jsonPath("$.users", hasSize(1)))
+            .andExpect(jsonPath("$.users[0].username").value(USER_1))
+            .andReturn();
+        System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
     @Test
@@ -62,11 +60,19 @@ public class StuffControllerTest extends BaseControllerTest {
 
     @Test
     @WithMockUser
-    public void whenGetStuffList_shouldReturnListOfStuffs(Principal principal) throws Exception {
+    public void whenGetStuffList_shouldReturnListOfStuffs() throws Exception {
         String name2 = NAME + "2";
-        String username = principal.getName();
-        addStuff(buildNewStuff(NAME, username));
-        addStuff(buildNewStuff(name2, username));
+        String username = "user";
+        mockMvc.perform(
+            post("/rest/stuff")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(buildNewStuff(NAME, username)))
+        );
+        mockMvc.perform(
+            post("/rest/stuff")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(buildNewStuff(name2, username)))
+        );
 
         mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -81,8 +87,16 @@ public class StuffControllerTest extends BaseControllerTest {
     @Test
     @WithMockUser(USER_1)
     public void whenGetStuffList_shouldReturnOnlyUsersStuff() throws Exception {
-        addStuff(buildNewStuff(NAME + 1, USER_1));
-        addStuff(buildNewStuff(NAME + 2, "user2"));
+        mockMvc.perform(
+            post("/rest/stuff")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(buildNewStuff(NAME + 1, USER_1)))
+        );
+        mockMvc.perform(
+            post("/rest/stuff")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(buildNewStuff(NAME + 2, "user2")))
+        );
 
         mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -109,4 +123,5 @@ public class StuffControllerTest extends BaseControllerTest {
     private Stuff buildNewStuff(String name, String username) {
         return Stuff.builder().users(Sets.newHashSet(User.builder().username(username).build())).name(name).build();
     }
+
 }

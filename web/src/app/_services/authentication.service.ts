@@ -21,13 +21,13 @@ export class AuthenticationService {
         let token = response.text();
         if (token) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', token);
+          localStorage.setItem('token', token);
         }
       });
   }
 
   logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem('token');
   }
 }
