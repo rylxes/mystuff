@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Response} from '@angular/http';
+import {Headers, Http, RequestOptions, Response} from '@angular/http';
 import 'rxjs/add/operator/map'
 
 @Injectable()
@@ -8,13 +8,20 @@ export class AuthenticationService {
   }
 
   login(username: string, password: string) {
-    return this.http.post('/rest/login', JSON.stringify({username: username, password: password}))
+    let headers = new Headers();
+    headers.append("Content-Type", 'application/json');
+    let requestOptions = new RequestOptions({headers: headers});
+
+    return this.http.post('http://127.0.0.1:9000/rest/token/new', {
+      username: username,
+      password: password
+    }, requestOptions)
       .map((response: Response) => {
         // login successful if there's a jwt token in the response
-        let user = response.json();
-        if (user && user.token) {
+        let token = response.text();
+        if (token) {
           // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem('currentUser', JSON.stringify(user));
+          localStorage.setItem('currentUser', token);
         }
       });
   }

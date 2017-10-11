@@ -15,6 +15,7 @@ import {AlertService} from "./_services/alert.service";
 import {AuthGuard} from "./_guards/auth.guard";
 import {AlertComponent} from "./_directives/alert.component";
 import {HttpModule} from "@angular/http";
+import {StuffListComponent} from './stuff-list/stuff-list.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {HttpModule} from "@angular/http";
     AlertComponent,
     RegisterComponent,
     HomeComponent,
+    StuffListComponent,
   ],
   imports: [
     BrowserModule,
