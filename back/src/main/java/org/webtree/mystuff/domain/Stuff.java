@@ -1,8 +1,10 @@
 package org.webtree.mystuff.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
@@ -16,6 +18,8 @@ import static org.neo4j.ogm.annotation.Relationship.INCOMING;
 @Builder
 @NodeEntity
 @JsonInclude(NON_EMPTY)
+@NoArgsConstructor
+@AllArgsConstructor
 public class Stuff {
     @GraphId
     private Long id;

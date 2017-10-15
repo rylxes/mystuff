@@ -19,6 +19,4 @@ export class StuffListComponent implements OnInit {
       this.stuffList = stuffList.json();
     });
   }
-
-
 }

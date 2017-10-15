@@ -6,10 +6,10 @@ import org.junit.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.webtree.mystuff.domain.Stuff;
 import org.webtree.mystuff.domain.User;
+import org.webtree.mystuff.security.WithMockCustomUser;
 import org.webtree.mystuff.service.StuffService;
 
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WithMockUser
+@WithMockCustomUser
 public class StuffControllerTest extends BaseControllerTest {
     private static final String NAME = "name example";
     private static final String USER_1 = "user1";
@@ -59,44 +59,22 @@ public class StuffControllerTest extends BaseControllerTest {
     }
 
     @Test
-    @WithMockUser
     public void whenGetStuffList_shouldReturnListOfStuffs() throws Exception {
-        String name2 = NAME + "2";
-        String username = "user";
-        mockMvc.perform(
-            post("/rest/stuff")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(buildNewStuff(NAME, username)))
-        );
-        mockMvc.perform(
-            post("/rest/stuff")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(buildNewStuff(name2, username)))
-        );
+        stuffService.addStuff(buildNewStuff(NAME, USER_1));
+        stuffService.addStuff(buildNewStuff(NAME + 2, USER_1));
 
         mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors").doesNotExist())
             .andExpect(jsonPath("$", hasSize(2)))
             .andExpect(jsonPath("$[0].id").isNumber())
-            .andExpect(jsonPath("$[1].id").isNumber())
-            .andExpect(jsonPath("$[0].name").value(NAME))
-            .andExpect(jsonPath("$[1].name").value(name2));
+            .andExpect(jsonPath("$[1].id").isNumber());
     }
 
     @Test
-    @WithMockUser(USER_1)
     public void whenGetStuffList_shouldReturnOnlyUsersStuff() throws Exception {
-        mockMvc.perform(
-            post("/rest/stuff")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(buildNewStuff(NAME + 1, USER_1)))
-        );
-        mockMvc.perform(
-            post("/rest/stuff")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(buildNewStuff(NAME + 2, "user2")))
-        );
+        stuffService.addStuff(buildNewStuff(NAME, USER_1));
+        stuffService.addStuff(buildNewStuff(NAME + 2, USER_1 + 2));
 
         mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
