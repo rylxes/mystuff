@@ -8,7 +8,7 @@ import {StuffService} from "../_services/stuff.service";
 })
 export class StuffListComponent implements OnInit {
 
-  private stuffList;
+  public stuffList;
 
   constructor(private stuffService: StuffService) {
   }

@@ -17,7 +17,6 @@ import {AlertComponent} from "./_directives/alert.component";
 import {HttpModule} from "@angular/http";
 import {StuffListComponent} from './stuff-list/stuff-list.component';
 import {StuffService} from "./_services/stuff.service";
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MenuComponent} from './menu/menu.component';
 
 @NgModule({
@@ -37,8 +36,7 @@ import {MenuComponent} from './menu/menu.component';
     HttpModule,
     HttpClientModule,
     ReactiveFormsModule,
-    routing,
-    NgbModule.forRoot()
+    routing
   ],
   providers: [
     AuthGuard,
