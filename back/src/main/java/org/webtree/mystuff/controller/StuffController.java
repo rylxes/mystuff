@@ -2,6 +2,7 @@ package org.webtree.mystuff.controller;
 
 import com.google.common.collect.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.webtree.mystuff.domain.Stuff;
@@ -23,7 +24,7 @@ public class StuffController {
     @PostMapping
     public Stuff add(@RequestBody Stuff stuff, Authentication authentication) {
         stuff.setUsers(Sets.newHashSet((User) authentication.getPrincipal()));
-        return stuffService.addStuff(stuff);
+        return stuffService.save(stuff);
     }
 
     @GetMapping("/{id}")
@@ -34,5 +35,19 @@ public class StuffController {
     @GetMapping("/list")
     public Iterable<Stuff> getList(Principal principal) {
         return stuffService.getUserStuff(principal.getName());
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> delete(@RequestHeader long id, Principal principal) {
+        stuffService.delete(id, principal.getName());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/addExisting")
+    public ResponseEntity<?> addExisting(@RequestHeader long id, Authentication authentication) {
+        Stuff stuff = stuffService.getById(id);
+        stuff.getUsers().add((User) authentication.getPrincipal());
+        stuffService.save(stuff);
+        return ResponseEntity.ok().build();
     }
 }

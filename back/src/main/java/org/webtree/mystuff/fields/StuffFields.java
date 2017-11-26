@@ -3,27 +3,18 @@ package org.webtree.mystuff.fields;
 import com.merapar.graphql.GraphQlFields;
 import graphql.Scalars;
 import graphql.schema.*;
-import graphql.schema.idl.RuntimeWiring;
-import graphql.schema.idl.SchemaGenerator;
-import graphql.schema.idl.SchemaParser;
-import graphql.schema.idl.TypeDefinitionRegistry;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.webtree.mystuff.fetcher.StuffFetcher;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import static com.merapar.graphql.base.GraphQlFieldsHelper.*;
-import static com.merapar.graphql.base.GraphQlFieldsHelper.INPUT;
-import static com.merapar.graphql.base.GraphQlFieldsHelper.getInputMap;
-import static graphql.Scalars.GraphQLInt;
-import static graphql.Scalars.GraphQLLong;
-import static graphql.Scalars.GraphQLString;
+import static graphql.Scalars.*;
 import static graphql.schema.GraphQLArgument.newArgument;
 import static graphql.schema.GraphQLFieldDefinition.newFieldDefinition;
 import static graphql.schema.GraphQLInputObjectField.newInputObjectField;
@@ -99,7 +90,7 @@ public class StuffFields implements GraphQlFields {
             .build();
 
         addStuffField = newFieldDefinition()
-            .name("addStuff").description("Add new stuff")
+            .name("save").description("Add new stuff")
             .type(stuffType)
             .argument(newArgument().name(INPUT).type(new GraphQLNonNull(addStuffInputType)).build())
             .dataFetcher(environment -> stuffFetcher.add(getInputMap(environment)))

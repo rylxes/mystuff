@@ -19,4 +19,19 @@ export class StuffListComponent implements OnInit {
       this.stuffList = stuffList.json();
     });
   }
+
+  delete(id: number) {
+    this.stuffService.delete(id, () => this._deleteFromCache(id));
+  }
+
+  private _deleteFromCache(id) {
+    console.log(this.stuffList);
+    for (let stuffIndex in this.stuffList) {
+      let stuff = this.stuffList[stuffIndex];
+      console.log(stuff);
+      if (stuff['id'] === id) {
+        this.stuffList.splice(stuffIndex, 1);
+      }
+    }
+  }
 }

@@ -11,10 +11,11 @@ import org.webtree.mystuff.domain.Stuff;
 import org.webtree.mystuff.domain.User;
 import org.webtree.mystuff.security.WithMockCustomUser;
 import org.webtree.mystuff.service.StuffService;
+import org.webtree.mystuff.service.UserService;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -22,12 +23,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class StuffControllerTest extends BaseControllerTest {
     private static final String NAME = "name example";
     private static final String USER_1 = "user1";
+    private static final String USER_2 = "user2";
 
     @Rule
     public ClearGraphDBRule clearGraphDBRule = new ClearGraphDBRule();
 
     @SpyBean
     public StuffService stuffService;
+    @SpyBean
+    public UserService userService;
 
     @Test
     public void whenAddStuff_shouldReturnNewId() throws Exception {
@@ -49,7 +53,7 @@ public class StuffControllerTest extends BaseControllerTest {
 
     @Test
     public void whenGetStuff_shouldReturnItFromService() throws Exception {
-        stuffService.addStuff(Stuff.builder().id(1L).name(NAME).build());
+        stuffService.save(Stuff.builder().id(1L).name(NAME).build());
 
         mockMvc.perform(get("/rest/stuff/1").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -60,8 +64,8 @@ public class StuffControllerTest extends BaseControllerTest {
 
     @Test
     public void whenGetStuffList_shouldReturnListOfStuffs() throws Exception {
-        stuffService.addStuff(buildNewStuff(NAME, USER_1));
-        stuffService.addStuff(buildNewStuff(NAME + 2, USER_1));
+        stuffService.save(buildNewStuff(NAME, USER_1));
+        stuffService.save(buildNewStuff(NAME + 2, USER_1));
 
         mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -73,8 +77,8 @@ public class StuffControllerTest extends BaseControllerTest {
 
     @Test
     public void whenGetStuffList_shouldReturnOnlyUsersStuff() throws Exception {
-        stuffService.addStuff(buildNewStuff(NAME, USER_1));
-        stuffService.addStuff(buildNewStuff(NAME + 2, USER_1 + 2));
+        stuffService.save(buildNewStuff(NAME, USER_1));
+        stuffService.save(buildNewStuff(NAME + 2, USER_1 + 2));
 
         mockMvc.perform(get("/rest/stuff/list").contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -96,6 +100,47 @@ public class StuffControllerTest extends BaseControllerTest {
         Stuff stuff = buildNewStuff(NAME, USER_1);
         mockMvc.perform(get("/rest/stuff/1", objectMapper.writeValueAsString(stuff)).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnauthorized());
+        mockMvc.perform(delete("/rest/stuff").header("id", String.valueOf(stuff.getId())))
+            .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void whenDeleteStuff_shouldNotReturnItForUser() throws Exception {
+        Stuff stuff = stuffService.save(buildNewStuff(NAME, USER_1));
+
+        mockMvc.perform(delete("/rest/stuff").header("id", String.valueOf(stuff.getId())))
+            .andExpect(status().isOk());
+        mockMvc.perform(get("/rest/stuff/list"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.errors").doesNotExist())
+            .andExpect(jsonPath("$", hasSize(0)));
+    }
+
+    @Test
+    @WithAnonymousUser
+    public void whenAddExistingStuff_shouldReturnForBothUsers() throws Exception {
+        Stuff stuff = stuffService.save(buildNewStuff(NAME, USER_1));
+        User user2 = userService.add(User.builder().username(USER_2).password("pass").build());
+
+        MvcResult mvcResult = mockMvc.perform(
+            post("/rest/token/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(user2))
+        )
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.errors").doesNotExist())
+            .andReturn();
+        String user2token = mvcResult.getResponse().getContentAsString();
+
+        mockMvc.perform(post("/rest/stuff/addExisting")
+            .header("Authorization", "Bearer " + user2token)
+            .header("id", stuff.getId()))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.errors").doesNotExist());
+
+        Stuff updatedStuff = stuffService.getById(stuff.getId());
+        assertThat(updatedStuff.getUsers().size()).isEqualTo(2);
+        assertThat(updatedStuff.getUsers()).containsExactlyInAnyOrder(user2, userService.loadUserByUsername(USER_1));
     }
 
     private Stuff buildNewStuff(String name, String username) {

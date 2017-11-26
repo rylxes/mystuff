@@ -66,8 +66,8 @@ public class StuffTest {
     @Test
     public void add() throws Exception {
         // Given
-        val query = "mutation addStuff($input: addStuffInput!) {"
-            + "  addStuff(input: $input) {"
+        val query = "mutation save($input: addStuffInput!) {"
+            + "  save(input: $input) {"
             + "    id"
             + "    name"
             + "  }\n"
@@ -85,8 +85,8 @@ public class StuffTest {
         // Then
         result.andExpect(status().isOk())
             .andExpect(jsonPath("$.errors").doesNotExist())
-            .andExpect(jsonPath("$.data.addStuff.id").value(key))
-            .andExpect(jsonPath("$.data.addStuff.name").value(value));
+            .andExpect(jsonPath("$.data.save.id").value(key))
+            .andExpect(jsonPath("$.data.save.name").value(value));
 
         assertThat(stuffFetcher.stuffList.containsKey(key));
     }

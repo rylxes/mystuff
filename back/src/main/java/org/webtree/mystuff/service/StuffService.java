@@ -14,7 +14,7 @@ public class StuffService {
         this.stuffRepository = stuffRepository;
     }
 
-    public Stuff addStuff(Stuff stuff) {
+    public Stuff save(Stuff stuff) {
         return stuffRepository.save(stuff);
     }
 
@@ -28,5 +28,9 @@ public class StuffService {
 
     public Iterable<Stuff> getUserStuff(String username) {
         return stuffRepository.getUserStuff(username);
+    }
+
+    public void delete(Long id, String username) {
+        stuffRepository.delete(id);
     }
 }

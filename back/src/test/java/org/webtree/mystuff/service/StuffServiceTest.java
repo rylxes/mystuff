@@ -22,7 +22,7 @@ public class StuffServiceTest {
     public void testAddAndGetStuff() throws Exception {
         assertThat(stuffService.getById(ID)).isNull();
         Stuff stuff = Stuff.builder().name(NAME).build();
-        Stuff addedStuff = stuffService.addStuff(stuff);
+        Stuff addedStuff = stuffService.save(stuff);
         assertThat(addedStuff.getId()).isNotNull();
         Stuff byId = stuffService.getById(addedStuff.getId());
         assertThat(byId).isNotNull();
