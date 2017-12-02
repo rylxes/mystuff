@@ -18,6 +18,7 @@ import {HttpModule} from "@angular/http";
 import {StuffListComponent} from './stuff-list/stuff-list.component';
 import {StuffService} from "./_services/stuff.service";
 import {MenuComponent} from './menu/menu.component';
+import {StuffDetailsComponent} from './stuff-details/stuff-details.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import {MenuComponent} from './menu/menu.component';
     HomeComponent,
     StuffListComponent,
     MenuComponent,
+    StuffDetailsComponent,
   ],
   imports: [
     BrowserModule,

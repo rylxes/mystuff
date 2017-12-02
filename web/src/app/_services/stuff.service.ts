@@ -1,4 +1,3 @@
-import {Stuff} from "../_models/Stuff";
 import {Injectable} from "@angular/core";
 import {Http, Response} from "@angular/http";
 import {UserService} from "./user.service";
@@ -10,8 +9,8 @@ export class StuffService {
   constructor(private http: Http, private userService: UserService) {
   }
 
-  public getStuff(id): Stuff {
-    return null;
+  public getStuff(id): Observable<Response> {
+    return this.http.get('http://127.0.0.1:9000/rest/stuff/' + id, this.userService.jwt());
   }
 
   public getMyStuff(): Observable<Response> {

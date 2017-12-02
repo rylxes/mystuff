@@ -1,6 +1,7 @@
 <ul class="list-group">
   <li class="list-group-item" *ngFor="let stuff of stuffList">
-    {{stuff.name}}
+    <a class="nav-link" [routerLink]="['/stuff/' + stuff.id]">{{stuff.name}}</a>
+
     <button class="btn btn-light float-right" (click)="delete(stuff.id)">
       <span class="oi oi-trash" title="delete" aria-hidden="true"></span>
     </button>
