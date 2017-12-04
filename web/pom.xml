@@ -34,22 +34,13 @@
             </configuration>
           </execution>
           <execution>
-            <id>angular-cli install</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <arguments>install --no-optional -g @angular/cli</arguments>
-            </configuration>
-          </execution>
-          <execution>
-            <id>npm update package</id>
+            <id>npm update</id>
             <goals>
               <goal>npm</goal>
             </goals>
             <phase>generate-resources</phase>
             <configuration>
-              <arguments>update package</arguments>
+              <arguments>update</arguments>
             </configuration>
           </execution>
           <execution>
