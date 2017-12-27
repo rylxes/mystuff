@@ -28,7 +28,7 @@
             <goals>
               <goal>install-node-and-npm</goal>
             </goals>
-            <phase>generate-resources</phase>
+            <phase>initialize</phase>
             <configuration>
               <nodeVersion>v8.7.0</nodeVersion>
             </configuration>
@@ -38,14 +38,14 @@
             <goals>
               <goal>npm</goal>
             </goals>
-            <phase>generate-resources</phase>
+            <phase>initialize</phase>
             <configuration>
               <arguments>update</arguments>
             </configuration>
           </execution>
           <execution>
             <id>npm run-script prod</id>
-            <phase>prepare-package</phase>
+            <phase>compile</phase>
             <goals>
               <goal>npm</goal>
             </goals>
