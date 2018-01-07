@@ -9,7 +9,7 @@ import {StuffDetailsComponent} from "./stuff-details/stuff-details.component";
 const appRoutes: Routes = [
   // {path: '', component: HomeComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent, canActivate: [AuthGuard]},
+  {path: 'register', component: RegisterComponent},
   {path: 'stuff/list', component: StuffListComponent, canActivate: [AuthGuard]},
   {path: 'stuff/add', component: AddStuffComponent, canActivate: [AuthGuard]},
   {path: 'stuff/:id', component: StuffDetailsComponent, canActivate: [AuthGuard]},

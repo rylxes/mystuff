@@ -6,14 +6,10 @@ RUN npm set progress=false && npm config set depth 0
 #&& npm cache clean --force
 RUN mkdir /web
 WORKDIR /web
-COPY package.json package-lock.json ./
-RUN npm i
-#&& cp -R ./node_modules ./web
-
 COPY . .
-
+RUN npm config set registry http://registry.npmjs.org/
+RUN npm i
 RUN $(npm bin)/ng build --prod --build-optimizer
-RUN ls /web/dist
 
 #RUN npm update && ng serve --prod
 
