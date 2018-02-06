@@ -4,21 +4,22 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AddStuffComponent} from './add-stuff/add-stuff.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {HttpClientModule} from "@angular/common/http";
-import {LoginComponent} from './login/login.component';
-import {RegisterComponent} from './register/register.component';
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {LoginComponent} from './login';
+import {RegisterComponent} from './register';
 import {routing} from './app.routing';
-import {HomeComponent} from './home/home.component';
-import {UserService} from "./_services/user.service";
-import {AuthenticationService} from "./_services/authentication.service";
-import {AlertService} from "./_services/alert.service";
-import {AuthGuard} from "./_guards/auth.guard";
+import {HomeComponent} from './home';
+import {AlertService, AuthenticationService, UserService} from "./_services";
+import {AuthGuard} from "./_guards";
 import {AlertComponent} from "./_directives/alert.component";
 import {HttpModule} from "@angular/http";
 import {StuffListComponent} from './stuff-list/stuff-list.component';
 import {StuffService} from "./_services/stuff.service";
 import {MenuComponent} from './menu/menu.component';
 import {StuffDetailsComponent} from './stuff-details/stuff-details.component';
+import {TokenService} from "./_services/token.service";
+import {ConfigService} from "./_services/config.service";
+import {AuthHttpIntercept} from "./_intercept/auth-http-intercept";
 
 @NgModule({
   declarations: [
@@ -44,8 +45,15 @@ import {StuffDetailsComponent} from './stuff-details/stuff-details.component';
     AuthGuard,
     AlertService,
     AuthenticationService,
+    ConfigService,
+    TokenService,
     StuffService,
     UserService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthHttpIntercept,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

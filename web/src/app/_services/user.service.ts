@@ -1,41 +1,47 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http, RequestOptions, Response} from '@angular/http';
 
-import {User} from '../_models/index';
+import {User} from '../_models';
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs/Observable";
+import {ConfigService} from "./config.service";
 
 @Injectable()
 export class UserService {
-  constructor(private http: Http) {
+  constructor(private http: HttpClient,
+              private config: ConfigService) {
   }
 
-  getAll() {
-    return this.http.get('/api/users', this.jwt()).map((response: Response) => response.json());
+  // getAll() {
+  //   return this.http.get('/api/users', this.jwt()).map((response: Response) => response.json());
+  // }
+  //
+  // getById(id: number) {
+  //   return this.http.get('/api/users/' + id, this.jwt()).map((response: Response) => response.json());
+  // }
+
+  create(user: User): Observable<User> {
+    return this.http.post<User>(this.config.getBackUrl() + '/rest/user/register', user);
   }
 
-  getById(id: number) {
-    return this.http.get('/api/users/' + id, this.jwt()).map((response: Response) => response.json());
-  }
-
-  create(user: User) {
-    return this.http.post('http://127.0.0.1:9000/rest/user/register', user, this.jwt()).map((response: Response) => response.json());
-  }
-
-  update(user: User) {
-    return this.http.put('/api/users/' + user.id, user, this.jwt()).map((response: Response) => response.json());
-  }
-
-  delete(id: number) {
-    return this.http.delete('/api/users/' + id, this.jwt()).map((response: Response) => response.json());
-  }
+  // update(user: User) {
+  //   return this.http.put('/api/users/' + user.id, user, this.jwt()).map((response: Response) => response.json());
+  // }
+  //
+  // delete(id: number) {
+  //   return this.http.delete('/api/users/' + id, this.jwt()).map((response: Response) => response.json());
+  // }
 
   // private helper methods
-
-  public jwt() {
-    // create authorization header with jwt token
-    let token = localStorage.getItem('token');
-    if (token) {
-      let headers = new Headers({'Authorization': 'Bearer ' + token});
-      return new RequestOptions({headers: headers});
-    }
-  }
+  // /**
+  //  * @deprecated
+  //  * @returns {RequestOptions}
+  //  */
+  // public jwt() {
+  //   // create authorization header with jwt token
+  //   let token = localStorage.getItem('token');
+  //   if (token) {
+  //     let headers = new Headers({'Authorization': 'Bearer ' + token});
+  //     return new RequestOptions({headers: headers});
+  //   }
+  // }
 }

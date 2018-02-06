@@ -100,7 +100,7 @@ public class StuffControllerTest extends BaseControllerTest {
         Stuff stuff = buildNewStuff(NAME, USER_1);
         mockMvc.perform(get("/rest/stuff/1", objectMapper.writeValueAsString(stuff)).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnauthorized());
-        mockMvc.perform(delete("/rest/stuff").header("id", String.valueOf(stuff.getId())))
+        mockMvc.perform(delete("/rest/stuff/" + stuff.getId()))
             .andExpect(status().isUnauthorized());
     }
 
@@ -108,7 +108,7 @@ public class StuffControllerTest extends BaseControllerTest {
     public void whenDeleteStuff_shouldNotReturnItForUser() throws Exception {
         Stuff stuff = stuffService.save(buildNewStuff(NAME, USER_1));
 
-        mockMvc.perform(delete("/rest/stuff").header("id", String.valueOf(stuff.getId())))
+        mockMvc.perform(delete("/rest/stuff/" + stuff.getId()))
             .andExpect(status().isOk());
         mockMvc.perform(get("/rest/stuff/list"))
             .andExpect(status().isOk())

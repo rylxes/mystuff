@@ -1,25 +1,31 @@
 import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
 import {UserService} from "./user.service";
 import {Observable} from "rxjs/Observable";
+import {HttpClient} from "@angular/common/http";
+import {Stuff} from "../_models";
+import {ConfigService} from "./config.service";
 
 @Injectable()
 export class StuffService {
 
-  constructor(private http: Http, private userService: UserService) {
+  constructor(private http: HttpClient,
+              private userService: UserService,
+              private config: ConfigService) {
   }
 
-  public getStuff(id): Observable<Response> {
-    return this.http.get('http://127.0.0.1:9000/rest/stuff/' + id, this.userService.jwt());
+  public getStuff(id): Observable<Stuff> {
+    return this.http.get<Stuff>(this.config.getBackUrl() + '/rest/stuff/' + id);
   }
 
-  public getMyStuff(): Observable<Response> {
-    return this.http.get('http://127.0.0.1:9000/rest/stuff/list', this.userService.jwt());
+  public getMyStuff(): Observable<Stuff[]> {
+    return this.http.get<Stuff[]>(this.config.getBackUrl() + '/rest/stuff/list');
   }
 
-  public delete(id, onFinish: () => void) {
-    let options = this.userService.jwt();
-    options.headers.set('id', id);
-    return this.http.delete('http://127.0.0.1:9000/rest/stuff', options).subscribe(res => onFinish());
+  public addStuff(stuff: Stuff): Observable<Stuff> {
+    return this.http.post<Stuff>(this.config.getBackUrl() + "/rest/stuff", stuff);
+  }
+
+  public delete(id): Observable<void> {
+    return this.http.delete<void>(this.config.getBackUrl() + '/rest/stuff/' + id);
   }
 }

@@ -28,7 +28,7 @@ public class StuffController {
     }
 
     @GetMapping("/{id}")
-    public Stuff get(@PathVariable Long id) {
+    public Stuff get(@PathVariable long id) {
         return stuffService.getById(id);
     }
 
@@ -37,8 +37,8 @@ public class StuffController {
         return stuffService.getUserStuff(principal.getName());
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> delete(@RequestHeader long id, Principal principal) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable long id, Principal principal) {
         stuffService.delete(id, principal.getName());
         return ResponseEntity.ok().build();
     }

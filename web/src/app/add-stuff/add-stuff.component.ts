@@ -1,8 +1,8 @@
 import {Component, OnInit} from "@angular/core";
 import {Stuff} from "../_models/Stuff";
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {Http} from '@angular/http';
-import {UserService} from "../_services/user.service";
+import {HttpClient} from "@angular/common/http";
+import {StuffService} from "../_services/stuff.service";
 
 @Component({
   selector: 'add-stuff',
@@ -15,8 +15,8 @@ export class AddStuffComponent implements OnInit {
   model: Stuff = new Stuff(0, "", "", []);
 
   constructor(private fb: FormBuilder,
-              private http: Http,
-              private userService: UserService) {
+              private http: HttpClient,
+              private stuffService: StuffService) {
     this.stuffFormInit();
   }
 
@@ -33,7 +33,12 @@ export class AddStuffComponent implements OnInit {
     // headers.append("Content-Type", 'application/json');
     // headers.append("X-Auth-Token", "Bearer " + localStorage.getItem("token"));
     // let requestOptions = new RequestOptions({headers: headers});
-    this.http.post("http://localhost:9000/rest/stuff", this.addStuff.value, this.userService.jwt()).subscribe(stuff => {
+    // this.userService.create(this.addStuff.value).subscribe(stuff => {
+    //   console.log(stuff);
+    //
+    // });
+    // this.http.post(this.restService.getUrl() + "/rest/stuff", this.addStuff.value, this.restService.defaultHeaders()).subscribe(stuff => {
+    this.stuffService.addStuff(this.addStuff.value).subscribe(stuff => {
       //TODO: update data
       console.log(stuff);
     });

@@ -4,10 +4,14 @@ services:
     image: webtree/org.web-tree.mystuff.web
     ports:
       - "80:80"
+    links:
+      - "back:back"
+    environment:
+      - BACKEND_URL=http://back:9000
   back:
     image: webtree/org.web-tree.mystuff.back
     ports:
-      - "8080:9000"
+      - "9000:9000"
   neo4j:
     image: neo4j:3.0
     ports:
