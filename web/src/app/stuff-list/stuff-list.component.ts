@@ -15,13 +15,13 @@ export class StuffListComponent implements OnInit {
 
   ngOnInit() {
     this.stuffService.getMyStuff().subscribe(stuffList => {
-      console.log(stuffList.json());
-      this.stuffList = stuffList.json();
+      this.stuffList = stuffList;
     });
   }
 
   delete(id: number) {
-    this.stuffService.delete(id, () => this._deleteFromCache(id));
+    console.log(id);
+    this.stuffService.delete(id).subscribe(() => this._deleteFromCache(id));
   }
 
   private _deleteFromCache(id) {

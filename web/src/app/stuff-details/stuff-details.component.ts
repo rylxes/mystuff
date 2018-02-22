@@ -17,7 +17,7 @@ export class StuffDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.stuffService.getStuff(params['id']).subscribe(stuff => this.stuff = stuff.json());
+      this.stuffService.getStuff(params['id']).subscribe(stuff => this.stuff = stuff);
     });
   }
 }
