@@ -3,7 +3,7 @@ services:
   web:
     image: webtree/org.web-tree.mystuff.web
     ports:
-      - "80:31001",
+      - "31001:80"
     links:
       - "back:back"
     environment:
@@ -11,8 +11,8 @@ services:
   back:
     image: webtree/org.web-tree.mystuff.back
     ports:
-      - "9000:31002"
+      - "31002:9000"
   neo4j:
     image: neo4j:3.0
     ports:
-     - "17474:31003"
+     - "17474:7474"
