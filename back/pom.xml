@@ -42,7 +42,7 @@
 
         <jjwt.version>0.7.0</jjwt.version>
 
-        <docker.image.prefix>webtree</docker.image.prefix>
+        <docker.image.prefix>webtree.org:5000</docker.image.prefix>
     </properties>
     <dependencies>
         <!-- Own -->
