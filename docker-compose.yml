@@ -7,7 +7,7 @@ services:
     links:
       - "back:back"
     environment:
-      - BACKEND_URL=http://back:9000
+      - BACKEND_URL=http://back.mystuff.webtree.org:9000
   back:
     image: webtree/org.web-tree.mystuff.back
     ports:
