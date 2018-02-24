@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationService} from "../_services/authentication.service";
+import {AuthenticationService} from "../_services";
 
 @Component({
-  selector: 'menu',
+  selector: 'main-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css']
 })
@@ -12,6 +12,10 @@ export class MenuComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  isAuthorized(): boolean {
+    return this.authService.isAuthorized()
   }
 
   logout() {

@@ -24,6 +24,7 @@ public class Stuff {
     @GraphId
     private Long id;
     private String name;
+    private String description;
     @Relationship(type = "use", direction = INCOMING)
     private Set<User> users;
 }

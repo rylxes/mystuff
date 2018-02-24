@@ -12,7 +12,6 @@ import {HomeComponent} from './home';
 import {AlertService, AuthenticationService, UserService} from "./_services";
 import {AuthGuard} from "./_guards";
 import {AlertComponent} from "./_directives/alert.component";
-import {HttpModule} from "@angular/http";
 import {StuffListComponent} from './stuff-list/stuff-list.component';
 import {StuffService} from "./_services/stuff.service";
 import {MenuComponent} from './menu/menu.component';
@@ -36,7 +35,6 @@ import {AuthHttpIntercept} from "./_intercept/auth-http-intercept";
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
     HttpClientModule,
     ReactiveFormsModule,
     routing
