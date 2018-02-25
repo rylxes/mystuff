@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    image: webtree.org:5000/org.web-tree.mystuff.web
+    image: webtree/org.web-tree.mystuff.web
     ports:
       - "31001:80"
     links:
@@ -9,7 +9,7 @@ services:
     environment:
       - BACKEND_URL=http://back.mystuff.webtree.org:9000
   back:
-    image: webtree.org:5000/org.web-tree.mystuff.back
+    image: webtree/org.web-tree.mystuff.back
     ports:
       - "31002:9000"
   neo4j:

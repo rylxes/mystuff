@@ -12,7 +12,7 @@
   </repositories>
 
   <properties>
-    <docker.image.prefix>webtree.org:5000</docker.image.prefix>
+    <docker.image.prefix>webtree</docker.image.prefix>
   </properties>
   <dependencies>
 
