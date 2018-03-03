@@ -18,6 +18,7 @@ import org.webtree.mystuff.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -155,7 +156,7 @@ public class StuffControllerTest extends BaseControllerTest {
 
     @Test
     public void whenAddStuffCategory_shouldSaveCorrect() throws Exception {
-        Stuff stuff = buildNewStuffWithStaffCategory(NAME, USER_1, CATEGORY1, CATEGORY2);
+        Stuff stuff = buildNewStuffWithStaffCategory(NAME, USER_1);
         MvcResult mvcResult = mockMvc.perform(
             post("/rest/stuff")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -182,9 +183,8 @@ public class StuffControllerTest extends BaseControllerTest {
     @Test
     public void whenReadStuff_shouldReturnCorrectFromService() throws Exception {
 
-        StuffCategory sc1 = StuffCategory.builder().category(CATEGORY1).build();
-        StuffCategory sc2 = StuffCategory.builder().category(CATEGORY2).build();
-        Stuff stuff = stuffService.save(Stuff.builder().name(NAME).category(sc1).category(sc2).category(sc1).build());
+
+        Stuff stuff = stuffService.save(buildNewStuffWithStaffCategory(NAME,USER_1));
         Stuff test = stuffService.getById(stuff.getId());
         System.out.println(test.toString());
         assertThat(stuff).isNotNull();
@@ -196,14 +196,32 @@ public class StuffControllerTest extends BaseControllerTest {
 
     }
 
+
+
+
     private Stuff buildNewStuff(String name, String username) {
-        return Stuff.builder().users(Sets.newHashSet(User.builder().username(username).build())).name(name).build();
+        return Stuff.builder().users(buildNewUsers(username)).name(name).build();
     }
 
-    private Stuff buildNewStuffWithStaffCategory(String name, String username, String category1, String category2) {
-        StuffCategory sc1 = StuffCategory.builder().category(category1).build();
-        StuffCategory sc2 = StuffCategory.builder().category(category2).build();
-        return Stuff.builder().users(Sets.newHashSet(User.builder().username(username).build())).name(name).category(sc1).category(sc2).build();
+    private List<StuffCategory> buildNewStaffCategories() {
+        StuffCategory sc1 = StuffCategory.builder().category(CATEGORY1).build();
+        StuffCategory sc2 = StuffCategory.builder().category(CATEGORY2).build();
+        List<StuffCategory> stuffCategories = new ArrayList<>();
+        stuffCategories.add(sc1);
+        stuffCategories.add(sc2);
+        return stuffCategories;
+
     }
+
+    private Set<User> buildNewUsers(String username) {
+        return Sets.newHashSet(User.builder().username(username).build());
+    }
+
+
+    private Stuff buildNewStuffWithStaffCategory(String name, String username) {
+        return Stuff.builder().users(buildNewUsers(username)).name(name)
+            .categories(buildNewStaffCategories()).build();
+    }
+
 
 }

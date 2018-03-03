@@ -27,5 +27,5 @@ public class Stuff {
     private Set<User> users;
     @Singular
     private List<StuffCategory> categories;
-   // @Singular private List<String> categories;
+
 }
