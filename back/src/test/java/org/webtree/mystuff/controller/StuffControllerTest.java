@@ -1,5 +1,7 @@
 package org.webtree.mystuff.controller;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import org.junit.Rule;
 import org.junit.Test;
@@ -154,16 +156,26 @@ public class StuffControllerTest extends BaseControllerTest {
     @Test
     public void whenAddStuffCategory_shouldSaveCorrect() throws Exception {
         Stuff stuff = buildNewStuffWithStaffCategory(NAME, USER_1, CATEGORY1, CATEGORY2);
-        mockMvc.perform(
+        MvcResult mvcResult = mockMvc.perform(
             post("/rest/stuff")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(stuff))
         )
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.categories[0].category").value(stuff.getCategories().get(0).getCategory()))
-            .andExpect(jsonPath("$.categories[1].category").value(stuff.getCategories().get(1).getCategory()));
-        //Stuff updatedStuff = stuffService.getById(3);
-       // assertThat(updatedStuff.getCategories()).isEqualTo(stuff.getCategories());
+            .andReturn();
+        String postResponse = mvcResult.getResponse().getContentAsString();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Stuff savedStaff = objectMapper.readValue(postResponse, Stuff.class);
+
+       MvcResult result = mockMvc.perform(
+            get("/rest/stuff/" + savedStaff.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+
+        )
+            .andExpect(status().isOk()).andReturn();
+           String getResponse = result.getResponse().getContentAsString();
+        Stuff gotStaff = objectMapper.readValue(getResponse, Stuff.class);
+        assertThat(savedStaff.getCategories()).isEqualTo(gotStaff.getCategories());
 
     }
 
@@ -187,6 +199,7 @@ public class StuffControllerTest extends BaseControllerTest {
     private Stuff buildNewStuff(String name, String username) {
         return Stuff.builder().users(Sets.newHashSet(User.builder().username(username).build())).name(name).build();
     }
+
     private Stuff buildNewStuffWithStaffCategory(String name, String username, String category1, String category2) {
         StuffCategory sc1 = StuffCategory.builder().category(category1).build();
         StuffCategory sc2 = StuffCategory.builder().category(category2).build();
