@@ -131,7 +131,6 @@ public class StuffControllerTest extends BaseControllerTest {
     public void whenAddExistingStuff_shouldReturnForBothUsers() throws Exception {
         Stuff stuff = stuffService.save(buildNewStuff(NAME, USER_1));
         User user2 = userService.add(User.builder().username(USER_2).password("pass").build());
-
         MvcResult mvcResult = mockMvc.perform(
             post("/rest/token/new")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -164,17 +163,18 @@ public class StuffControllerTest extends BaseControllerTest {
         )
             .andExpect(status().isOk())
             .andReturn();
+
         String postResponse = mvcResult.getResponse().getContentAsString();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         Stuff savedStaff = objectMapper.readValue(postResponse, Stuff.class);
-
-       MvcResult result = mockMvc.perform(
+        MvcResult result = mockMvc.perform(
             get("/rest/stuff/" + savedStaff.getId())
                 .contentType(MediaType.APPLICATION_JSON)
 
         )
             .andExpect(status().isOk()).andReturn();
-           String getResponse = result.getResponse().getContentAsString();
+
+        String getResponse = result.getResponse().getContentAsString();
         Stuff gotStaff = objectMapper.readValue(getResponse, Stuff.class);
         assertThat(savedStaff.getCategories()).isEqualTo(gotStaff.getCategories());
 
@@ -182,21 +182,16 @@ public class StuffControllerTest extends BaseControllerTest {
 
     @Test
     public void whenReadStuff_shouldReturnCorrectFromService() throws Exception {
-
-
-        Stuff stuff = stuffService.save(buildNewStuffWithStaffCategory(NAME,USER_1));
+        Stuff stuff = stuffService.save(buildNewStuffWithStaffCategory(NAME, USER_1));
         Stuff test = stuffService.getById(stuff.getId());
-        System.out.println(test.toString());
         assertThat(stuff).isNotNull();
+
         mockMvc.perform(get("/rest/stuff/" + test.getId()).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.categories[0].category").value(stuff.getCategories().get(0).getCategory()))
             .andExpect(jsonPath("$.categories[1].category").value(stuff.getCategories().get(1).getCategory()));
 
-
     }
-
-
 
 
     private Stuff buildNewStuff(String name, String username) {
