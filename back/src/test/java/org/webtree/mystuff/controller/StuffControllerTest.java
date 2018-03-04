@@ -1,5 +1,7 @@
 package org.webtree.mystuff.controller;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import org.junit.Rule;
 import org.junit.Test;
@@ -8,10 +10,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.webtree.mystuff.domain.Stuff;
+import org.webtree.mystuff.domain.StuffCategory;
 import org.webtree.mystuff.domain.User;
 import org.webtree.mystuff.security.WithMockCustomUser;
 import org.webtree.mystuff.service.StuffService;
 import org.webtree.mystuff.service.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
@@ -24,6 +31,9 @@ public class StuffControllerTest extends BaseControllerTest {
     private static final String NAME = "name example";
     private static final String USER_1 = "user1";
     private static final String USER_2 = "user2";
+    private static final String CATEGORY1 = "category1";
+    private static final String CATEGORY2 = "category2";
+
 
     @Rule
     public ClearGraphDBRule clearGraphDBRule = new ClearGraphDBRule();
@@ -121,7 +131,6 @@ public class StuffControllerTest extends BaseControllerTest {
     public void whenAddExistingStuff_shouldReturnForBothUsers() throws Exception {
         Stuff stuff = stuffService.save(buildNewStuff(NAME, USER_1));
         User user2 = userService.add(User.builder().username(USER_2).password("pass").build());
-
         MvcResult mvcResult = mockMvc.perform(
             post("/rest/token/new")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -143,8 +152,71 @@ public class StuffControllerTest extends BaseControllerTest {
         assertThat(updatedStuff.getUsers()).containsExactlyInAnyOrder(user2, userService.loadUserByUsername(USER_1));
     }
 
-    private Stuff buildNewStuff(String name, String username) {
-        return Stuff.builder().users(Sets.newHashSet(User.builder().username(username).build())).name(name).build();
+
+    @Test
+    public void whenAddStuffCategory_shouldSaveCorrect() throws Exception {
+        Stuff stuff = buildNewStuffWithStaffCategory(NAME, USER_1);
+        MvcResult mvcResult = mockMvc.perform(
+            post("/rest/stuff")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(stuff))
+        )
+            .andExpect(status().isOk())
+            .andReturn();
+
+        String postResponse = mvcResult.getResponse().getContentAsString();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Stuff savedStaff = objectMapper.readValue(postResponse, Stuff.class);
+        MvcResult result = mockMvc.perform(
+            get("/rest/stuff/" + savedStaff.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+
+        )
+            .andExpect(status().isOk()).andReturn();
+
+        String getResponse = result.getResponse().getContentAsString();
+        Stuff gotStaff = objectMapper.readValue(getResponse, Stuff.class);
+        assertThat(savedStaff.getCategories()).isEqualTo(gotStaff.getCategories());
+
     }
+
+    @Test
+    public void whenReadStuff_shouldReturnCorrectFromService() throws Exception {
+        Stuff stuff = stuffService.save(buildNewStuffWithStaffCategory(NAME, USER_1));
+        Stuff test = stuffService.getById(stuff.getId());
+        assertThat(stuff).isNotNull();
+
+        mockMvc.perform(get("/rest/stuff/" + test.getId()).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.categories[0].category").value(stuff.getCategories().get(0).getCategory()))
+            .andExpect(jsonPath("$.categories[1].category").value(stuff.getCategories().get(1).getCategory()));
+
+    }
+
+
+    private Stuff buildNewStuff(String name, String username) {
+        return Stuff.builder().users(buildNewUsers(username)).name(name).build();
+    }
+
+    private List<StuffCategory> buildNewStaffCategories() {
+        StuffCategory sc1 = StuffCategory.builder().category(CATEGORY1).build();
+        StuffCategory sc2 = StuffCategory.builder().category(CATEGORY2).build();
+        List<StuffCategory> stuffCategories = new ArrayList<>();
+        stuffCategories.add(sc1);
+        stuffCategories.add(sc2);
+        return stuffCategories;
+
+    }
+
+    private Set<User> buildNewUsers(String username) {
+        return Sets.newHashSet(User.builder().username(username).build());
+    }
+
+
+    private Stuff buildNewStuffWithStaffCategory(String name, String username) {
+        return Stuff.builder().users(buildNewUsers(username)).name(name)
+            .categories(buildNewStaffCategories()).build();
+    }
+
 
 }
