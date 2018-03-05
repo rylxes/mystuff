@@ -33,8 +33,11 @@ public abstract class BaseSpringTest {
             return new Statement() {
                 @Override
                 public void evaluate() throws Throwable {
-                    statement.evaluate();
-                    clearAllGraphRepositories();
+                    try {
+                        statement.evaluate();
+                    } finally {
+                        clearAllGraphRepositories();
+                    }
                 }
             };
         }
