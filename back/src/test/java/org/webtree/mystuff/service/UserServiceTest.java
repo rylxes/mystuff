@@ -25,7 +25,7 @@ public class UserServiceTest extends BaseSpringTest {
     public void testSaveAndGet() throws Exception {
         User addedUser = addUser();
         assertThat(addedUser).isNotNull();
-        assertThat(addedUser.getId()).isEqualTo(0);
+        assertThat(addedUser.getId()).isGreaterThanOrEqualTo(0);
 
         assertThat(userService.getById(addedUser.getId())).isEqualTo(addedUser);
     }
