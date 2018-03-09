@@ -8,10 +8,21 @@
     <label for="description">Description</label>
     <input class="form-control" formControlName="description" id="description"/>
   </div>
-  <div class="form-group">
-    <label for="categories">Categories</label>
-    <input class="form-control" id="categories" />
-  </div>
+  <mat-form-field class="chip-list">
+    <mat-chip-list #chipList>
+      <mat-chip color="accent" selected="true" *ngFor="let category of categories" [selectable]="selectable" [removable]="removable" (remove)="remove(category)">
+        {{category.name}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input   placeholder="New Category" id="category"
+               [matChipInputFor]="chipList"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="addOnBlur"
+               (matChipInputTokenEnd)="add($event)" />
+    </mat-chip-list>
+  </mat-form-field>
   <button type="submit">Save</button>
 </form>
 {{addStuff.value | json}}
+
+

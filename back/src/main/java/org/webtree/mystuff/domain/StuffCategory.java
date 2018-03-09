@@ -19,5 +19,5 @@ import org.neo4j.ogm.annotation.NodeEntity;
 public class StuffCategory {
     @GraphId
     private Long id;
-    private String category;
+    private String name;
 }

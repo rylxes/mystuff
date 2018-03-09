@@ -25,8 +25,8 @@ public class StuffServiceTest {
 
     @Test
     public void testAddAndGetStuff() throws Exception {
-        StuffCategory sc1 = StuffCategory.builder().category("category1").build();
-        StuffCategory sc2 = StuffCategory.builder().category("category2").build();
+        StuffCategory sc1 = StuffCategory.builder().name("category1").build();
+        StuffCategory sc2 = StuffCategory.builder().name("category2").build();
         assertThat(stuffService.getById(ID)).isNull();
         Stuff stuff = Stuff.builder().name(NAME).category(sc1).category(sc2).build();
         Stuff addedStuff = stuffService.save(stuff);

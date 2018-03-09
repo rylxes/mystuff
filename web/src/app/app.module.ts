@@ -1,6 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
 import {AppComponent} from './app.component';
 import {AddStuffComponent} from './add-stuff/add-stuff.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -19,6 +18,9 @@ import {StuffDetailsComponent} from './stuff-details/stuff-details.component';
 import {TokenService} from "./_services/token.service";
 import {ConfigService} from "./_services/config.service";
 import {AuthHttpIntercept} from "./_intercept/auth-http-intercept";
+import {MatChipsModule, MatFormFieldModule, MatIconModule} from "@angular/material";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+
 
 @NgModule({
   declarations: [
@@ -31,14 +33,24 @@ import {AuthHttpIntercept} from "./_intercept/auth-http-intercept";
     StuffListComponent,
     MenuComponent,
     StuffDetailsComponent,
+
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    routing
+    routing,
+    BrowserModule,
+    ReactiveFormsModule,
+    MatChipsModule,
+    MatIconModule,
+    MatFormFieldModule,
+    BrowserAnimationsModule
+
+
   ],
+
   providers: [
     AuthGuard,
     AlertService,

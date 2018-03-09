@@ -1,7 +1,6 @@
 package org.webtree.mystuff.controller;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Sets;
 import org.junit.Rule;
 import org.junit.Test;
@@ -188,8 +187,8 @@ public class StuffControllerTest extends BaseControllerTest {
 
         mockMvc.perform(get("/rest/stuff/" + test.getId()).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.categories[0].category").value(stuff.getCategories().get(0).getCategory()))
-            .andExpect(jsonPath("$.categories[1].category").value(stuff.getCategories().get(1).getCategory()));
+            .andExpect(jsonPath("$.categories[0].name").value(stuff.getCategories().get(0).getName()))
+            .andExpect(jsonPath("$.categories[1].name").value(stuff.getCategories().get(1).getName()));
 
     }
 
@@ -199,8 +198,8 @@ public class StuffControllerTest extends BaseControllerTest {
     }
 
     private List<StuffCategory> buildNewStaffCategories() {
-        StuffCategory sc1 = StuffCategory.builder().category(CATEGORY1).build();
-        StuffCategory sc2 = StuffCategory.builder().category(CATEGORY2).build();
+        StuffCategory sc1 = StuffCategory.builder().name(CATEGORY1).build();
+        StuffCategory sc2 = StuffCategory.builder().name(CATEGORY2).build();
         List<StuffCategory> stuffCategories = new ArrayList<>();
         stuffCategories.add(sc1);
         stuffCategories.add(sc2);
