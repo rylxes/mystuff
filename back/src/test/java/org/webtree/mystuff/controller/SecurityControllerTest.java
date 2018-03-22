@@ -3,12 +3,17 @@ package org.webtree.mystuff.controller;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultMatcher;
 import org.webtree.mystuff.domain.User;
 import org.webtree.mystuff.security.JwtTokenUtil;
 import org.webtree.mystuff.service.UserService;
+
+import java.util.Locale;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -21,6 +26,9 @@ public class SecurityControllerTest extends BaseControllerTest {
     private static final String TEST_PASS = "testPass";
     @Rule
     public ClearGraphDBRule clearGraphDBRule = new ClearGraphDBRule();
+
+    @Autowired
+    private MessageSource messageSource;
 
     @Autowired
     private UserService userService;
@@ -49,5 +57,42 @@ public class SecurityControllerTest extends BaseControllerTest {
     public void whenRefreshWithInvalidToken_shouldReturnError() throws Exception {
         mockMvc.perform(get("/rest/token/refresh"))
             .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    public void whenLoginWithIncorrectUsername_shouldReturnErrorMessage() throws Exception {
+        User wrongUsernameUser = User.builder().username("wrong").password(TEST_PASS).build();
+
+        ResultActions actions = mockMvc.perform(
+            post("/rest/token/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(wrongUsernameUser))
+        );
+
+        assertUnauthorized(actions);
+    }
+
+    @Test
+    public void whenLoginWithIncorrectPassword_shouldReturnErrorMessage() throws Exception {
+        User user = User.builder().username(TEST_USERNAME).password(TEST_PASS).build();
+        userService.add(user);
+        User wrongPasswordUser = User.builder().username(TEST_USERNAME).password("123").build();
+
+        ResultActions actions = mockMvc.perform(
+            post("/rest/token/new")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(wrongPasswordUser))
+        );
+
+        assertUnauthorized(actions);
+    }
+
+    private void assertUnauthorized(ResultActions resultActions) throws Exception {
+        String errorMessage = messageSource.getMessage("login.badCredentials", null, Locale.getDefault());
+
+        resultActions
+            .andExpect(status().is(401))
+            .andExpect(jsonPath("$").value(errorMessage));
+
     }
 }
