@@ -32,11 +32,10 @@ describe('UserService', () => {
 
     const req = httpMock.expectOne(configService.getBackUrl() + '/rest/user/register');
     expect(req.request.method).toEqual('POST');
-    req.flush(testUser)
+    expect(req.request.body).toEqual(testUser);
+    req.flush(testUser);
 
     httpMock.verify();
   });
-
-
 
 });
