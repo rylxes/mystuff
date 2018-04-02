@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AddStuffComponent} from './add-stuff/add-stuff.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -20,6 +20,8 @@ import {ConfigService} from "./_services/config.service";
 import {AuthHttpIntercept} from "./_intercept/auth-http-intercept";
 import {MatChipsModule, MatFormFieldModule, MatIconModule} from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {ErrorsHandler} from "./_error-handler/errors-handler";
+import {Subject} from "rxjs/Subject";
 
 
 @NgModule({
@@ -52,6 +54,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
   ],
 
   providers: [
+    Subject,
     AuthGuard,
     AlertService,
     AuthenticationService,
@@ -63,6 +66,10 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
       provide: HTTP_INTERCEPTORS,
       useClass: AuthHttpIntercept,
       multi: true
+    },
+    {
+      provide: ErrorHandler,
+      useClass: ErrorsHandler,
     }
   ],
   bootstrap: [AppComponent]

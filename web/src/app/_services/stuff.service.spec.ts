@@ -1,4 +1,3 @@
-
 import {TestBed} from "@angular/core/testing";
 
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
@@ -6,7 +5,6 @@ import {ConfigService} from "./config.service";
 import {StuffService} from "./stuff.service";
 import {UserService} from "./user.service";
 import {Stuff} from "../_models/Stuff";
-
 
 
 describe('StuffService', () => {
@@ -27,11 +25,11 @@ describe('StuffService', () => {
   });
 
   it('#getStuff should return expected Stuff', () => {
-    const testStuff:any = {id: 1, name: 'testUser' , description: 'TestDescription',categories: [] };
+    const testStuff: Stuff = {id: 1, name: 'testUser', description: 'TestDescription', categories: []};
     const testId: number = 1;
 
     stuffService.getStuff(testId).subscribe(stuff => {
-        expect(stuff).toEqual(testStuff);
+        expect(stuff).toEqual(jasmine.objectContaining(testStuff));
       }
     );
 
@@ -42,9 +40,9 @@ describe('StuffService', () => {
   });
 
   it('#getMyStuff should return expected list of Stuffs', () => {
-    const testStuffArray:any =
-      [{id: 1, name: 'testUser1' , description: 'TestDescription1',categories:[]},
-       {id: 2, name: 'testUser2' , description: 'TestDescription2',categories:[]}];
+    const testStuffArray: Stuff[] =
+      [{id: 1, name: 'testUser1', description: 'TestDescription1', categories: []},
+        {id: 2, name: 'testUser2', description: 'TestDescription2', categories: []}];
 
     stuffService.getMyStuff().subscribe(stuff => {
         expect(stuff).toEqual(testStuffArray);
@@ -59,10 +57,10 @@ describe('StuffService', () => {
 
 
   it('#addStuff should save and return correct stuff', () => {
-    const testStuff:any = {name: 'testUser' , description: 'TestDescription',categories: [] };
+    const testStuff: Stuff = {id: 1, name: 'testUser', description: 'TestDescription', categories: []};
 
     stuffService.addStuff(testStuff).subscribe(stuff => {
-        expect(stuff).toEqual(testStuff);
+        expect(stuff).toEqual(jasmine.objectContaining(testStuff));
       }
     );
 
@@ -77,11 +75,11 @@ describe('StuffService', () => {
   it('#delete should works correct', () => {
 
     const testId: number = 1;
-    stuffService.delete(testId).subscribe(()=>{});
+    stuffService.delete(testId).subscribe(() => {
+    });
 
     const req = httpMock.expectOne(configService.getBackUrl() + '/rest/stuff/' + testId);
     expect(req.request.method).toEqual('DELETE');
-   // req.flush();
     httpMock.verify();
   });
 });
