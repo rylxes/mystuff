@@ -3,6 +3,7 @@ import {TestBed} from "@angular/core/testing";
 
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {ConfigService} from "./config.service";
+import {User} from "../_models/User";
 
 
 describe('UserService', () => {
@@ -23,13 +24,12 @@ describe('UserService', () => {
   });
 
   it('create should pass and return correct user', () => {
-    const testUser: any = {username: "testName", password: "testPassword"};
+    const testUser: User = {id: 1, username: "testName", password: "testPassword"};
 
     userService.create(testUser).subscribe(user => {
-        expect(user).toEqual(testUser);
+        expect(user).toEqual(jasmine.objectContaining(testUser));
       }
     );
-
     const req = httpMock.expectOne(configService.getBackUrl() + '/rest/user/register');
     expect(req.request.method).toEqual('POST');
     expect(req.request.body).toEqual(testUser);

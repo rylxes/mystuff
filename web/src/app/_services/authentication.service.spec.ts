@@ -31,8 +31,7 @@ describe('AuthenticationService', () => {
     const testUserName: string = 'testUser';
     const testPassword: string = 'testPassword';
 
-    authService.login(testUserName, testPassword).subscribe(() => {
-    });
+    authService.login(testUserName, testPassword).subscribe(() => {});
 
     const req = httpMock.expectOne(configService.getBackUrl() + '/rest/token/new');
     expect(req.request.method).toEqual('POST');
@@ -46,14 +45,14 @@ describe('AuthenticationService', () => {
 
     authServiceWithSpy.logout();
     expect(tokenSpy.removeToken).toHaveBeenCalled();
-    expect(tokenSpy.removeToken.calls.count()).toBe(1)
+    expect(tokenSpy.removeToken.calls.count()).toBe(1);
 
   });
 
   it('#isAuthorized should return expected value from tokenService', () => {
     const tokenSpy = jasmine.createSpyObj('TokenService', ['tokenExists']);
     tokenSpy.tokenExists.and.returnValue(true);
-    let authServiceWithSpy = new AuthenticationService(null, tokenSpy, null)
+    let authServiceWithSpy = new AuthenticationService(null, tokenSpy, null);
 
     expect(authServiceWithSpy.isAuthorized()).toBeTruthy();
     expect(tokenSpy.tokenExists).toHaveBeenCalled();
