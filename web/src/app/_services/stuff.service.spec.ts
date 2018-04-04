@@ -29,6 +29,10 @@ describe('StuffService', () => {
     configService = TestBed.get(ConfigService);
   });
 
+  afterEach(() => {
+    httpMock.verify();
+  });
+
   it('#getStuff should return expected Stuff', () => {
     stuffService.getStuff(testId).subscribe(stuff => {
         expect(stuff).toEqual(jasmine.objectContaining(testStuff));
@@ -37,11 +41,6 @@ describe('StuffService', () => {
     const req = httpMock.expectOne(configService.getBackUrl() + '/rest/stuff/' + testId);
     expect(req.request.method).toEqual('GET');
     req.flush(testStuff);
-    httpMock.verify();
-  });
-
-  afterEach(() => {
-    httpMock.verify();
   });
 
   it('#getMyStuff should return expected list of Stuffs', () => {
