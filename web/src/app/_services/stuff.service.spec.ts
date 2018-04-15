@@ -54,13 +54,13 @@ describe('StuffService', () => {
   });
 
   it('#addStuff should save and return correct stuff', () => {
-    stuffService.addStuff(testStuff).subscribe(stuff => {
+    stuffService.addStuff(testStuff, [1, 2, 3]).subscribe(stuff => {
         expect(stuff).toEqual(jasmine.objectContaining(testStuff));
       }
     );
     const req = httpMock.expectOne(configService.getBackUrl() + '/rest/stuff');
     expect(req.request.method).toEqual('POST');
-    expect(req.request.body).toEqual(testStuff);
+    expect(req.request.body).toEqual({"stuff": testStuff, categories: [1, 2, 3]});
     req.flush(testStuff);
   });
 

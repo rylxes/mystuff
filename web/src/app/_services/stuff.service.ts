@@ -21,7 +21,7 @@ export class StuffService {
     return this.http.get<Stuff[]>(this.config.getBackUrl() + '/rest/stuff/list');
   }
 
-  public addStuff(stuff: Stuff, categories: number[]): Observable<Stuff> {
+  public addStuff(stuff: Stuff, categories: number[] = []): Observable<Stuff> {
     return this.http.post<Stuff>(this.config.getBackUrl() + "/rest/stuff", {"stuff": stuff, "categories": categories});
   }
 

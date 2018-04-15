@@ -28,12 +28,12 @@ public class StuffController {
         this.stuffService = stuffService;
     }
 
-    @GetMapping("/category/names")
+    @GetMapping("/category/names") //TODO: move into CategoryController
     public List<Category> getCategoriesList(@RequestParam("startsFrom") String searchString) {
         return categoryService.getCategoriesBySearchString(searchString);
     }
 
-    @PostMapping("/category")
+    @PostMapping("/category")//TODO: move into CategoryController
     @Transactional
     public Category addOrReturnExistingCategory(@RequestParam String categoryName, Authentication authentication) {
         Category category = categoryService.findByName(categoryName);

@@ -19,7 +19,6 @@ import static org.neo4j.ogm.annotation.Relationship.INCOMING;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Category {
-    public static final String USER_RELATIONSHIP = "creator";
     @GraphId
     private Long id;
     private String name;

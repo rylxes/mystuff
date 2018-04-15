@@ -30,11 +30,6 @@
         </repository>
     </repositories>
 
-    <!--<scm>-->
-    <!--<connection>scm:git:git://github.com/merapar/graphql-spring-boot-starter.git</connection>-->
-    <!--<developerConnection>scm:git:ssh://github.com:merapar/graphql-spring-boot-starter.git</developerConnection>-->
-    <!--<url>http://github.com/merapar/graphql-spring-boot-starter/tree/master</url>-->
-    <!--</scm>-->
     <properties>
         <java.version>1.8</java.version>
         <neo4j-kernel.version>3.2.3</neo4j-kernel.version>
@@ -45,13 +40,6 @@
         <docker.image.prefix>webtree</docker.image.prefix>
     </properties>
     <dependencies>
-        <!--&lt;!&ndash; Own &ndash;&gt;-->
-        <!--<dependency>-->
-        <!--<groupId>com.merapar</groupId>-->
-        <!--<artifactId>graphql-spring-boot-starter</artifactId>-->
-        <!--<version>1.0.3-alpha</version>-->
-        <!--</dependency>-->
-
         <!--spring-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
