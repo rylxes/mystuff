@@ -1,6 +1,7 @@
 package org.webtree.mystuff;
 
 
+import org.junit.Rule;
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
@@ -16,7 +17,9 @@ import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
-public abstract class BaseSpringTest {
+public abstract class AbstractSpringTest {
+    @Rule
+    public ClearGraphDBRule clearGraphDBRule = new ClearGraphDBRule();
     @Autowired
     private ApplicationContext ctx;
 
@@ -33,11 +36,8 @@ public abstract class BaseSpringTest {
             return new Statement() {
                 @Override
                 public void evaluate() throws Throwable {
-                    try {
-                        statement.evaluate();
-                    } finally {
-                        clearAllGraphRepositories();
-                    }
+                    clearAllGraphRepositories();
+                    statement.evaluate();
                 }
             };
         }

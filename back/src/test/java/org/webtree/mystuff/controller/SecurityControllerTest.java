@@ -8,7 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.webtree.mystuff.domain.User;
 import org.webtree.mystuff.security.JwtTokenUtil;
 import org.webtree.mystuff.service.UserService;
@@ -21,7 +20,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class SecurityControllerTest extends BaseControllerTest {
+public class SecurityControllerTest extends AbstractControllerTest {
     private static final String TEST_USERNAME = "testUser";
     private static final String TEST_PASS = "testPass";
     @Rule
