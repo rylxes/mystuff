@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AddStuffComponent} from './add-stuff/add-stuff.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -20,8 +20,14 @@ import {ConfigService} from "./_services/config.service";
 import {AuthHttpIntercept} from "./_intercept/auth-http-intercept";
 import {MatChipsModule, MatFormFieldModule, MatIconModule} from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {ErrorsHandler} from "./_error-handler/errors-handler";
+import {GlobalErrorHandler} from "./_error-handler/global.error.handler";
 import {Subject} from "rxjs/Subject";
+import {SimpleNotificationsModule} from 'angular2-notifications';
+import {HANDLERS} from "./_error-handler/http.error.handler.interface";
+import {SyntaxErrorHandler} from "./_error-handler/syntax.error.handler";
+import {TimeoutErrorHandler} from "./_error-handler/timeout.error.handler";
+import {UnauthorizedErrorHandler} from "./_error-handler/unuathorized.error.handler";
+import {DefaultHttpCodesErrorHandler} from "./_error-handler/default.httpcode.handler";
 
 
 @NgModule({
@@ -48,9 +54,8 @@ import {Subject} from "rxjs/Subject";
     MatChipsModule,
     MatIconModule,
     MatFormFieldModule,
-    BrowserAnimationsModule
-
-
+    BrowserAnimationsModule,
+    SimpleNotificationsModule.forRoot()
   ],
 
   providers: [
@@ -69,7 +74,27 @@ import {Subject} from "rxjs/Subject";
     },
     {
       provide: ErrorHandler,
-      useClass: ErrorsHandler,
+      useClass: GlobalErrorHandler,
+    }
+    , {
+      provide: HANDLERS,
+      useClass: SyntaxErrorHandler,
+      multi: true
+    },
+    {
+      provide: HANDLERS,
+      useClass: TimeoutErrorHandler,
+      multi: true
+    },
+    {
+      provide: HANDLERS,
+      useClass: UnauthorizedErrorHandler,
+      multi: true
+    },
+    {
+      provide: HANDLERS,
+      useClass: DefaultHttpCodesErrorHandler,
+      multi: true
     }
   ],
   bootstrap: [AppComponent]
