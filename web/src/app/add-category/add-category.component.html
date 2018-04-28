@@ -1,0 +1,20 @@
+<mat-form-field class="chip-list">
+  <mat-chip-list #chipList>
+    <mat-chip color="warn" selected="true" *ngFor="let category of getCategories()" [selectable]="true"
+              [removable]="true" (remove)="remove(category)">
+      {{category.name}}
+      <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+    </mat-chip>
+    <input placeholder="New Category" id="category" type="text" aria-label="Number" #matInput [formControl]="control"
+           [matAutocomplete]="auto"
+           [matChipInputFor]="chipList"
+           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+           [matChipInputAddOnBlur]="false"
+           (matChipInputTokenEnd)="add($event)"/>
+  </mat-chip-list>
+</mat-form-field>
+<mat-autocomplete #auto="matAutocomplete" (optionSelected)="addCategoryFromAutocomplete($event)">
+  <mat-option *ngFor="let option of autocompleteCategories" [value]="option">
+    {{option.name}}
+  </mat-option>
+</mat-autocomplete>

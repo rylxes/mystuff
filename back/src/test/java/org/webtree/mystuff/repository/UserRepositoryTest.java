@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.webtree.mystuff.BaseSpringTest;
+import org.webtree.mystuff.AbstractSpringTest;
 import org.webtree.mystuff.boot.App;
 import org.webtree.mystuff.domain.User;
 
@@ -14,7 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
-public class UserRepositoryTest extends BaseSpringTest {
+public class UserRepositoryTest extends AbstractSpringTest {
     private static final String USERNAME = "testUser";
     @Rule
     public ClearGraphDBRule clearGraphDBRule = new ClearGraphDBRule();

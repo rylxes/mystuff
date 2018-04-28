@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class UserControllerTest extends BaseControllerTest {
+public class UserControllerTest extends AbstractControllerTest {
     private static final String USERNAME = "testUser";
     @Rule
     public ClearGraphDBRule clearGraphDBRule = new ClearGraphDBRule();
