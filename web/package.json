@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^5.2.8",
     "@angular/router": "^5.2.8",
     "@angular/service-worker": "^5.2.8",
+    "angular2-notifications": "^0.9.8",
     "core-js": "^2.4.1",
     "rxjs": "^5.5.7",
     "zone.js": "^0.8.20"

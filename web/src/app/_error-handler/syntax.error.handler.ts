@@ -1,6 +1,11 @@
 import {HttpErrorHandler} from "./http.error.handler.interface";
+import {NotificationsService} from "angular2-notifications";
+import {NgZone} from "@angular/core";
 
 export class SyntaxErrorHandler implements HttpErrorHandler {
+  constructor(private notificationService: NotificationsService
+  ,private ngZone: NgZone
+  ){}
 
   acceptable(error: any) {
     if (error.error.error instanceof SyntaxError) {
@@ -11,6 +16,9 @@ export class SyntaxErrorHandler implements HttpErrorHandler {
   }
 
   handle(error: any) {
-    console.log("syntaxError")
+    this.ngZone.run(() => {
+      this.notificationService.bare("Error","some text here");
+    });
+    console.log(error);
   }
 }
