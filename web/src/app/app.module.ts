@@ -1,5 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {ErrorHandler, NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AddStuffComponent} from './add-stuff/add-stuff.component';
@@ -29,6 +30,13 @@ import {SyntaxErrorHandler} from "./_error-handler/syntax.error.handler";
 import {TimeoutErrorHandler} from "./_error-handler/timeout.error.handler";
 import {UnauthorizedErrorHandler} from "./_error-handler/unuathorized.error.handler";
 import {DefaultHttpCodesErrorHandler} from "./_error-handler/default.httpcode.handler";
+import {GlobalErrorHandler} from "./_error-handler/global.error.handler";
+import {HANDLERS} from "./_error-handler/http.error.handler.interface";
+import {SyntaxErrorHandler} from "./_error-handler/syntax.error.handler";
+import {TimeoutErrorHandler} from "./_error-handler/timeout.error.handler";
+import {UnauthorizedErrorHandler} from "./_error-handler/unuathorized.error.handler";
+import {DefaultHttpCodesErrorHandler} from "./_error-handler/default.httpcode.handler";
+import {SimpleNotificationsModule} from 'angular2-notifications';
 
 const appInitializer = (appConfig: ConfigService) => {
   return () => {
@@ -62,7 +70,8 @@ const appInitializer = (appConfig: ConfigService) => {
     MatFormFieldModule,
     MatAutocompleteModule,
     BrowserAnimationsModule,
-    SimpleNotificationsModule.forRoot()
+
+SimpleNotificationsModule.forRoot()
   ],
 
   providers: [
