@@ -1,7 +1,7 @@
 import {HttpErrorHandler} from "./http.error.handler.interface";
-import {AlertService} from "../_services/alert.service";
+import {NotificationsService} from 'angular2-notifications';
 import {Injectable, NgZone} from "@angular/core";
-import {NotificationsService} from "angular2-notifications";
+
 
 @Injectable()
 export class SyntaxErrorHandler implements HttpErrorHandler {

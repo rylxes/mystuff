@@ -1,5 +1,5 @@
 import {HttpErrorHandler} from "./http.error.handler.interface";
-import {NotificationsService} from "angular2-notifications";
+import {NotificationsService} from 'angular2-notifications';
 import {Injectable, NgZone} from "@angular/core";
 @Injectable()
 export class UnauthorizedErrorHandler implements HttpErrorHandler {
