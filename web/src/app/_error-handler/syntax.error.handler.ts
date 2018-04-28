@@ -1,11 +1,13 @@
 import {HttpErrorHandler} from "./http.error.handler.interface";
+import {AlertService} from "../_services/alert.service";
+import {Injectable, NgZone} from "@angular/core";
 import {NotificationsService} from "angular2-notifications";
-import {NgZone} from "@angular/core";
 
+@Injectable()
 export class SyntaxErrorHandler implements HttpErrorHandler {
-  constructor(private notificationService: NotificationsService
-  ,private ngZone: NgZone
-  ){}
+  constructor(private notificationService: NotificationsService,
+              private ngZone: NgZone) {
+  }
 
   acceptable(error: any) {
     if (error.error.error instanceof SyntaxError) {
@@ -17,7 +19,7 @@ export class SyntaxErrorHandler implements HttpErrorHandler {
 
   handle(error: any) {
     this.ngZone.run(() => {
-      this.notificationService.bare("Error","some text here");
+      this.notificationService.bare("Error", "some text here");
     });
     console.log(error);
   }
