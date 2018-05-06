@@ -16,6 +16,7 @@ export class GlobalErrorHandler implements ErrorHandler {
     for (let errorHandler of this.handlers) {
       if (errorHandler.acceptable(error)) {
         errorHandler.handle(error);
+        break;
       }
     }
   }

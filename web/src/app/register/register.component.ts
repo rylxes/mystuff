@@ -29,7 +29,7 @@ export class RegisterComponent implements OnInit {
         error => {
           this.loading = false;
           console.log(error);
-          if (error.status == 401) {
+          if (error.status == 400) {
             this.alertService.error(error.error);
           } else {
             throw  error;

@@ -8,16 +8,12 @@ export class TimeoutErrorHandler implements HttpErrorHandler {
   }
 
   acceptable(error: any): boolean {
-    if (error.status == 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return (error.status == 0)
   }
 
   handle(error: any): void {
     this.ngZone.run(() => {
-      this.notificationService.error("Error", "some text here");
+      this.notificationService.warn("Error", "No connection. Please try later");
     });
     console.log("timeOut");
   }

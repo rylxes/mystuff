@@ -9,17 +9,13 @@ export class SyntaxErrorHandler implements HttpErrorHandler {
               private ngZone: NgZone) {
   }
 
-  acceptable(error: any) {
-    if (error.error.error instanceof SyntaxError) {
-      return true;
-    } else {
-      return false;
-    }
+  acceptable(error: any): boolean {
+    return (error.error.error instanceof SyntaxError)
   }
 
   handle(error: any) {
     this.ngZone.run(() => {
-      this.notificationService.bare("Error", "some text here");
+      this.notificationService.warn("Error", "some text here");
     });
     console.log(error);
   }
