@@ -73,33 +73,22 @@ import {SimpleNotificationsModule} from 'angular2-notifications';
     StuffService,
     UserService,
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthHttpIntercept,
-      multi: true
+      provide: HTTP_INTERCEPTORS, useClass: AuthHttpIntercept, multi: true
     },
     {
-      provide: ErrorHandler,
-      useClass: GlobalErrorHandler,
+      provide: ErrorHandler, useClass: GlobalErrorHandler,
     }
     , {
-      provide: HANDLERS,
-      useClass: SyntaxErrorHandler,
-      multi: true
+      provide: HANDLERS, useClass: SyntaxErrorHandler, multi: true
     },
     {
-      provide: HANDLERS,
-      useClass: TimeoutErrorHandler,
-      multi: true
+      provide: HANDLERS, useClass: TimeoutErrorHandler, multi: true
     },
     {
-      provide: HANDLERS,
-      useClass: UnauthorizedErrorHandler,
-      multi: true
+      provide: HANDLERS, useClass: UnauthorizedErrorHandler, multi: true
     },
     {
-      provide: HANDLERS,
-      useClass: DefaultHttpCodesErrorHandler,
-      multi: true
+      provide: HANDLERS, useClass: DefaultHttpCodesErrorHandler, multi: true
     }
   ],
   bootstrap: [AppComponent]

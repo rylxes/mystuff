@@ -1,6 +1,9 @@
 import {HttpErrorHandler} from "./http.error.handler.interface";
 import {NotificationsService} from 'angular2-notifications';
 import {Injectable, NgZone} from "@angular/core";
+import {getStatusText, UNAUTHORIZED} from "http-status-codes";
+
+
 @Injectable()
 export class UnauthorizedErrorHandler implements HttpErrorHandler {
 
@@ -9,17 +12,12 @@ export class UnauthorizedErrorHandler implements HttpErrorHandler {
   }
 
   acceptable(error: any): boolean {
-
-    if (error.status == 401) {
-      return true;
-    } else {
-      return false;
-    }
+    return (error.status == UNAUTHORIZED)
   }
 
-  handle(error: any): void {
+    handle(error: any): void {
     this.ngZone.run(() => {
-      this.notificationService.bare("Error", "some text here");
+      this.notificationService.warn("Error 401", getStatusText(error.status));
     });
     console.log(error);
   }

@@ -1,6 +1,8 @@
 import {HttpErrorHandler} from "./http.error.handler.interface";
 import {NotificationsService} from 'angular2-notifications';
 import {Injectable, NgZone} from "@angular/core";
+import {getStatusText} from "http-status-codes";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable()
 export class DefaultHttpCodesErrorHandler implements HttpErrorHandler {
@@ -14,8 +16,8 @@ export class DefaultHttpCodesErrorHandler implements HttpErrorHandler {
 
   handle(error: any): void {
     this.ngZone.run(() => {
-      this.notificationService.bare("Error","some text here");
-    });
+      this.notificationService.warn("Error " + error.status , getStatusText(error.status));
+      });
     console.log(error);
   }
 }
