@@ -17,6 +17,5 @@ export class SyntaxErrorHandler implements HttpErrorHandler {
     this.ngZone.run(() => {
       this.notificationService.warn("Error", "some text here");
     });
-    console.log(error);
   }
 }

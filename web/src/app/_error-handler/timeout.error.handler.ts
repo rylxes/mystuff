@@ -1,6 +1,7 @@
 import {HttpErrorHandler} from "./http.error.handler.interface";
 import {NotificationsService} from 'angular2-notifications';
 import {Injectable, NgZone} from "@angular/core";
+
 @Injectable()
 export class TimeoutErrorHandler implements HttpErrorHandler {
   constructor(private notificationService: NotificationsService,
@@ -13,10 +14,7 @@ export class TimeoutErrorHandler implements HttpErrorHandler {
 
   handle(error: any): void {
     this.ngZone.run(() => {
-      this.notificationService.warn("Error", "No connection. Please try later");
+      this.notificationService.warn("Error", "No connection. Please try later.");
     });
-    console.log("timeOut");
   }
-
-
 }
