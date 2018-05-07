@@ -23,7 +23,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {Subject} from "rxjs/Subject";
 import {AddCategoryComponent} from './add-category/add-category.component';
 import {GlobalErrorHandler} from "./_error-handler/global.error.handler";
-import {HANDLERS, Implem} from "./_error-handler/http.error.handler.interface";
+import {HANDLERS} from "./_error-handler/http.error.handler.interface";
 import {SyntaxErrorHandler} from "./_error-handler/syntax.error.handler";
 import {TimeoutErrorHandler} from "./_error-handler/timeout.error.handler";
 import {UnauthorizedErrorHandler} from "./_error-handler/unuathorized.error.handler";
