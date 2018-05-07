@@ -2,7 +2,7 @@ import {HttpErrorHandler} from "./http.error.handler.interface";
 import {NotificationsService} from 'angular2-notifications';
 import {Injectable, NgZone} from "@angular/core";
 import {getStatusText} from "http-status-codes";
-import {HttpErrorResponse} from "@angular/common/http";
+
 
 @Injectable()
 export class DefaultHttpCodesErrorHandler implements HttpErrorHandler {

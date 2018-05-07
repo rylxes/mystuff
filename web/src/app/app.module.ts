@@ -31,7 +31,7 @@ import {TimeoutErrorHandler} from "./_error-handler/timeout.error.handler";
 import {UnauthorizedErrorHandler} from "./_error-handler/unuathorized.error.handler";
 import {DefaultHttpCodesErrorHandler} from "./_error-handler/default.httpcode.handler";
 import {GlobalErrorHandler} from "./_error-handler/global.error.handler";
-import {HANDLERS, Implem} from "./_error-handler/http.error.handler.interface";
+import {HANDLERS} from "./_error-handler/http.error.handler.interface";
 import {SyntaxErrorHandler} from "./_error-handler/syntax.error.handler";
 import {TimeoutErrorHandler} from "./_error-handler/timeout.error.handler";
 import {UnauthorizedErrorHandler} from "./_error-handler/unuathorized.error.handler";
