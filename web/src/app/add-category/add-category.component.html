@@ -5,7 +5,7 @@
       {{category.name}}
       <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
     </mat-chip>
-    <input placeholder="New Category" id="category" type="text" aria-label="Number" #matInput [formControl]="control"
+    <input placeholder="Category" id="category" type="text" aria-label="Number" #matInput [formControl]="control"
            [matAutocomplete]="auto"
            [matChipInputFor]="chipList"
            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
