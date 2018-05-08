@@ -14,7 +14,7 @@ export class TimeoutErrorHandler implements HttpErrorHandler {
 
   handle(error: any): void {
     this.ngZone.run(() => {
-      this.notificationService.warn("Error", "No connection. Please try later.");
+      this.notificationService.error("Error", "No connection. Please try later.");
     });
   }
 }
