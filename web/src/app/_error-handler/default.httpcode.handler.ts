@@ -16,8 +16,7 @@ export class DefaultHttpCodesErrorHandler implements HttpErrorHandler {
 
   handle(error: any): void {
     this.ngZone.run(() => {
-      this.notificationService.warn("Error " + error.status , getStatusText(error.status));
+      this.notificationService.error("Error " + error.status , getStatusText(error.status));
       });
-    console.log(error);
-  }
+    }
 }

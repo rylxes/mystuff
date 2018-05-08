@@ -15,7 +15,7 @@ export class UnauthorizedErrorHandler implements HttpErrorHandler {
 
   handle(error: any): void {
     this.ngZone.run(() => {
-      this.notificationService.warn("Error 401", getStatusText(error.status));
+      this.notificationService.error("Error 401", getStatusText(error.status));
     });
   }
 }
