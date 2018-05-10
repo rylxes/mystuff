@@ -1,5 +1,9 @@
 <div *ngIf="stuff">
   <div>Name: {{stuff.name}}</div>
   <div>Description: {{stuff.description}}</div>
+  <mat-chip-list>Categories: &nbsp;
+    <mat-chip *ngFor="let category of stuff.categories">{{category.name}}</mat-chip>
+  </mat-chip-list>
 </div>
+
 

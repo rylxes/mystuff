@@ -5,6 +5,7 @@ import {StuffService} from "../_services/stuff.service";
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
 import {AddCategoryComponent} from "../add-category/add-category.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'add-stuff',
@@ -19,7 +20,8 @@ export class AddStuffComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               private http: HttpClient,
-              private stuffService: StuffService) {
+              private stuffService: StuffService,
+              private router: Router) {
     this.stuffFormInit();
   }
 
@@ -33,9 +35,12 @@ export class AddStuffComponent implements OnInit {
 
 
   save() {
-    this.stuffService.addStuff(this.addStuff.value, this.getCategoryIds()).subscribe(stuff => {
-      console.log(stuff);
-    });
+    this.stuffService.addStuff(this.addStuff.value, this.getCategoryIds()).subscribe(
+      stuff => {
+        console.log(stuff);
+        this.router.navigate(['/stuff/' + stuff.id]);
+      }
+    );
   }
 
   ngOnInit() {
