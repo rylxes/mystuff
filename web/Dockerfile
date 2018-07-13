@@ -1,7 +1,6 @@
 ### STAGE 1: Build ###
 FROM node:8-alpine as builder
 
-
 RUN npm set progress=false && npm config set depth 0
 #&& npm cache clean --force
 RUN mkdir /web
@@ -24,3 +23,5 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /web/dist /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
+
+EXPOSE 80
