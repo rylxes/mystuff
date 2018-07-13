@@ -4,10 +4,6 @@ services:
     image: webtree/org.web-tree.mystuff.web
     ports:
       - "31001:80"
-    links:
-      - "back:back"
-    environment:
-      - BACKEND_URL=http://back.mystuff.webtree.org:9000
   back:
     image: webtree/org.web-tree.mystuff.back
     ports:
