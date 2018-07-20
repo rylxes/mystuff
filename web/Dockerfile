@@ -30,3 +30,5 @@ CMD ['/bin/bash -c "envsubst < /etc/nginx/conf.d/default-template.conf > /etc/ng
 #CMD ["nginx", "-g", "daemon off;"]
 
 EXPOSE 80
+
+EXPOSE 80
