@@ -8,7 +8,14 @@ services:
     image: webtree/org.web-tree.mystuff.back
     ports:
       - "31002:9000"
+    environment:
+      - spring.data.neo4j.uri=http://neo4j:17474
+    links:
+      - neo4j:neo4j
   neo4j:
     image: neo4j:3.0
+    environment:
+      - NEO4J_AUTH=none
+#      - NEO4J_AUTH=neo4j/AyB0HkMkV
     ports:
      - "17474:7474"

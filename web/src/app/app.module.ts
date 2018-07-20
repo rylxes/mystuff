@@ -23,6 +23,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {ErrorsHandler} from "./_error-handler/errors-handler";
 import {Subject} from "rxjs/Subject";
 import {AddCategoryComponent} from './add-category/add-category.component';
+import {CookieService} from "ngx-cookie-service";
 
 
 @NgModule({
@@ -62,6 +63,7 @@ import {AddCategoryComponent} from './add-category/add-category.component';
     AlertService,
     AuthenticationService,
     ConfigService,
+    CookieService,
     TokenService,
     StuffService,
     UserService,
