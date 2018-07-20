@@ -16,12 +16,17 @@ RUN $(npm bin)/ng build --prod --build-optimizer
 FROM nginx:1.13.3-alpine
 #FROM janeczku/debian-nginx
 
-COPY nginx/default.conf /etc/nginx/conf.d/
+# set back-url
+COPY nginx/default.conf /etc/nginx/conf.d/default-template.conf
+ENV back_url "localhost:9000"
+RUN envsubst < /etc/nginx/conf.d/default-template.conf > /etc/nginx/conf.d/default.conf
+RUN cat /etc/nginx/conf.d/default.conf
 
 RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=builder /web/dist /usr/share/nginx/html
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ['/bin/bash -c "envsubst < /etc/nginx/conf.d/default-template.conf > /etc/nginx/conf.d/default.conf && exec nginx -g \'daemon off;\'"']
+#CMD ["nginx", "-g", "daemon off;"]
 
 EXPOSE 80
