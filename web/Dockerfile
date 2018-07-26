@@ -17,7 +17,7 @@ FROM nginx:1.13.3-alpine
 #FROM janeczku/debian-nginx
 
 # set back-url
-COPY nginx/default.conf /etc/nginx/conf.d/default-template.conf
+COPY nginx/default.conf.template /etc/nginx/conf.d/default-template.conf
 ENV back_url "localhost:9000"
 RUN envsubst < /etc/nginx/conf.d/default-template.conf > /etc/nginx/conf.d/default.conf
 RUN cat /etc/nginx/conf.d/default.conf
