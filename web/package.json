@@ -25,6 +25,7 @@
     "@angular/router": "^5.2.11",
     "@angular/service-worker": "^5.2.11",
     "core-js": "^2.5.7",
+    "intl": "^1.2.5",
     "rxjs": "^5.5.11",
     "zone.js": "^0.8.26"
   },
@@ -44,7 +45,9 @@
     "karma-coverage-istanbul-reporter": "^1.4.3",
     "karma-jasmine": "^1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
-    "protractor": "~5.1.2",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "phantomjs-prebuilt": "^2.1.16",
+    "protractor": "^5.4.0",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
     "typescript": "~2.4.2"
