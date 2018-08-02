@@ -16,16 +16,19 @@ RUN $(npm bin)/ng build --prod --build-optimizer
 FROM nginx
 #FROM janeczku/debian-nginx
 
-# set back-url
-COPY nginx/default.conf.template /etc/nginx/conf.d/default.conf.template
+RUN apt-get update
+RUN apt-get -y install jq
 
+# set back-url
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx/script/start.sh /etc/nginx/start.sh
+RUN chmod +x /etc/nginx/start.sh
 
 RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=builder /web/dist /usr/share/nginx/html
 
-ENV back_url "localhost:9000"
-CMD ['/bin/bash -c "envsubst < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g \'daemon off;\'"']
-#CMD ["nginx", "-g", "daemon off;"]
+#CMD ['/bin/bash -c "envsubst < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g \'daemon off;\'"']
+CMD ["/etc/nginx/start.sh"]
 
 EXPOSE 80
