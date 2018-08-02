@@ -1,19 +1,21 @@
 import {TestBed} from "@angular/core/testing";
 
 import {ConfigService} from "./config.service";
-import { CookieService } from 'ngx-cookie-service';
+import {environment} from "../../environments/environment";
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 
 describe('ConfigService', () => {
 
   let configService: ConfigService;
-  let cookieService: CookieService;
+  let httpMock: HttpTestingController;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ConfigService, CookieService],
+      providers: [ConfigService],
+      imports: [HttpClientTestingModule]
     });
     configService = TestBed.get(ConfigService);
-    cookieService = TestBed.get(CookieService);
+    httpMock = TestBed.get(HttpTestingController);
   });
 
   it('#getBackUrl should return expected value', () => {
@@ -21,10 +23,12 @@ describe('ConfigService', () => {
     expect(configService.getBackUrl()).toEqual(url);
   });
 
-  it('#getBackUrl should return value from cookie', () => {
-    let urlFromCookie = "someUrlFromCookie";
-    spyOn(cookieService, 'get').and.returnValue(urlFromCookie);
-    spyOn(cookieService, 'check').and.returnValue(true);
-    expect(configService.getBackUrl()).toEqual(urlFromCookie);
+  it('#getBackUrl should return value config.json if reset', () => {
+    let urlFromConfig = "someUrlFromConfig";
+
+    configService.init().then(() => {
+      expect(environment.backUrl).toEqual(urlFromConfig)
+    });
+    httpMock.expectOne("/config.json").flush({"backUrl": urlFromConfig});
   });
 });

@@ -4,11 +4,14 @@ services:
     image: webtree/org.web-tree.mystuff.web
     environment:
       - BACK_URL=qwe
+      - qwe=asd
     ports:
-      - "31001:80"
+      - "80:80"
 #    command: sh -c "envsubst < /etc/nginx/conf.d/default-template.conf > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
-    command: sh -c "envsubst < /etc/nginx/conf.d/default-template.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+#    command: sh -c "envsubst < /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
 #    command: "/bin/bash -c \"envsubst < /etc/nginx/conf.d/default-template.conf > /etc/nginx/conf.d/default.conf && exec nginx -g \'daemon off;\'\""
+#    command: "/bin/bash -c \"echo 's/<BACK_URL>/$BACK_URL/' && sed -e 's/<BACK_URL>/qwe/' /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
+    command: '/bin/bash -c "sed -e \"s/<BACK_URL>/qwe/\" /etc/nginx/conf.d/default.conf.template > /etc/nginx/conf.d/default.conf && cat /etc/nginx/conf.d/default.conf && exec nginx -g \"daemon off;\""'
 #    command: ["nginx", "-g", "daemon off;"]
 #  back:
 #    image: webtree/org.web-tree.mystuff.back
