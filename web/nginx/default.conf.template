@@ -18,7 +18,6 @@ server {
   root /usr/share/nginx/html;
 
   location / {
-    add_header Set-Cookie back_url=$BACK_URL;
     try_files $uri $uri/ /index.html =404;
   }
 
