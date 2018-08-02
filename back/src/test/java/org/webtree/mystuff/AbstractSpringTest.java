@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.neo4j.repository.GraphRepository;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.webtree.mystuff.boot.App;
 
@@ -17,6 +18,7 @@ import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
+@ActiveProfiles("test")
 public abstract class AbstractSpringTest {
     @Rule
     public ClearGraphDBRule clearGraphDBRule = new ClearGraphDBRule();

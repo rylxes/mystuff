@@ -28,3 +28,9 @@ jwt:
     authentication:
       path: token/new
       refresh: refresh
+
+spring:
+  data:
+    neo4j:
+      uri: http://neo4j:password@localhost:7474
+      driver: org.neo4j.ogm.drivers.http.driver.HttpDriver

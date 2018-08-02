@@ -1,0 +1,5 @@
+spring:
+  data:
+    neo4j:
+      driver: org.neo4j.ogm.drivers.embedded.driver.EmbeddedDriver
+      uri:
