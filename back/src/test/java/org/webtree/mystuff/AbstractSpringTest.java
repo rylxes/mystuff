@@ -38,7 +38,11 @@ public abstract class AbstractSpringTest {
             return new Statement() {
                 @Override
                 public void evaluate() throws Throwable {
-                    clearAllGraphRepositories();
+                    try {
+                        clearAllGraphRepositories();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                     statement.evaluate();
                 }
             };
