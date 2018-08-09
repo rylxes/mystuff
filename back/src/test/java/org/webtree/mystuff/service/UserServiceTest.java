@@ -1,5 +1,6 @@
 package org.webtree.mystuff.service;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
+@Ignore("#30 neo4j")
 public class UserServiceTest extends AbstractSpringTest {
     private static final String USERNAME = "testUser";
     @Rule
