@@ -1,5 +1,6 @@
 package org.webtree.mystuff.controller;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ public class UserControllerTest extends AbstractControllerTest {
 
     @Test
     @WithAnonymousUser
+    @Ignore("Created Issue #27")
     public void whenRegisterUser_shouldCreateNewOne() throws Exception {
         mockMvc.perform(post("/rest/user/register")
             .contentType(MediaType.APPLICATION_JSON)

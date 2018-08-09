@@ -2,6 +2,7 @@ package org.webtree.mystuff.service;
 
 import com.google.common.collect.Sets;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
+@Ignore("#30 neo4j")
 public class StuffServiceTest extends AbstractServiceTest {
     private static final long ID = 123L;
     private static final String NAME = "test name";

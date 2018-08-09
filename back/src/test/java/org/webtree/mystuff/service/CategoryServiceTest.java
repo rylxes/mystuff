@@ -1,5 +1,6 @@
 package org.webtree.mystuff.service;
 
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -21,6 +22,7 @@ import static org.hamcrest.Matchers.containsString;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
+@Ignore("#30 neo4j")
 public class CategoryServiceTest extends AbstractSpringTest {
     private static final String USERNAME = "testUser";
     private static final String CATEGORY1 = "cat1";

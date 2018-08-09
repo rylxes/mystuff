@@ -11,7 +11,8 @@
         "assets",
         "css",
         "fonts",
-        "favicon.ico"
+        "favicon.ico",
+        "config.json"
       ],
       "index": "index.html",
       "main": "main.ts",

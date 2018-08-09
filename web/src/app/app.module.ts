@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule} from '@angular/core';
+import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AddStuffComponent} from './add-stuff/add-stuff.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -7,7 +7,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {LoginComponent} from './login';
 import {RegisterComponent} from './register';
 import {routing} from './app.routing';
-import {HomeComponent} from './home';
 import {AlertService, AuthenticationService, UserService} from "./_services";
 import {AuthGuard} from "./_guards";
 import {AlertComponent} from "./_directives/alert.component";
@@ -24,6 +23,11 @@ import {ErrorsHandler} from "./_error-handler/errors-handler";
 import {Subject} from "rxjs/Subject";
 import {AddCategoryComponent} from './add-category/add-category.component';
 
+const appInitializer = (appConfig: ConfigService) => {
+  return () => {
+    return appConfig.init();
+  };
+};
 
 @NgModule({
   declarations: [
@@ -32,7 +36,6 @@ import {AddCategoryComponent} from './add-category/add-category.component';
     LoginComponent,
     AlertComponent,
     RegisterComponent,
-    HomeComponent,
     StuffListComponent,
     MenuComponent,
     StuffDetailsComponent,
@@ -62,6 +65,12 @@ import {AddCategoryComponent} from './add-category/add-category.component';
     AlertService,
     AuthenticationService,
     ConfigService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInitializer,
+      multi: true,
+      deps: [ConfigService]
+    },
     TokenService,
     StuffService,
     UserService,
