@@ -1,8 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {ErrorHandler, NgModule} from '@angular/core';
-import {ErrorHandler, NgModule} from '@angular/core';
 import {APP_INITIALIZER, ErrorHandler, NgModule} from '@angular/core';
-import {ErrorHandler, NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AddStuffComponent} from './add-stuff/add-stuff.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -65,9 +62,7 @@ const appInitializer = (appConfig: ConfigService) => {
     MatAutocompleteModule,
     BrowserAnimationsModule,
     SimpleNotificationsModule.forRoot(),
-    BrowserAnimationsModule
 
-SimpleNotificationsModule.forRoot()
   ],
 
   providers: [
