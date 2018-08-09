@@ -41,7 +41,7 @@
             </goals>
             <phase>initialize</phase>
             <configuration>
-              <arguments>update</arguments>
+              <arguments>install</arguments>
             </configuration>
           </execution>
           <execution>
