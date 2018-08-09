@@ -45,8 +45,18 @@
             </configuration>
           </execution>
           <execution>
+            <id>npm run-script test</id>
+            <phase>test</phase>
+            <goals>
+              <goal>npm</goal>
+            </goals>
+            <configuration>
+              <arguments>run-script test</arguments>
+            </configuration>
+          </execution>
+          <execution>
             <id>npm run-script prod</id>
-            <phase>compile</phase>
+            <phase>package</phase>
             <goals>
               <goal>npm</goal>
             </goals>
