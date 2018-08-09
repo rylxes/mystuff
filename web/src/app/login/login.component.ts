@@ -41,10 +41,15 @@ export class LoginComponent implements OnInit {
           this.router.navigate([this.returnUrl]);
         },
         error => {
-          console.log(error);
-          this.alertService.error(error.error);
           this.loading = false;
-        });
+          console.log(error);
+          if (error.status == 401) {
+            this.alertService.error(error.error);
+          } else {
+            throw  error;
+          }
+        }
+      );
   }
 
 }
