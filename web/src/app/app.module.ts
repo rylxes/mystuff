@@ -1,5 +1,8 @@
 import {BrowserModule} from '@angular/platform-browser';
+import {ErrorHandler, NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {APP_INITIALIZER, CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule} from '@angular/core';
+import {ErrorHandler, NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AddStuffComponent} from './add-stuff/add-stuff.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -19,9 +22,15 @@ import {ConfigService} from "./_services/config.service";
 import {AuthHttpIntercept} from "./_intercept/auth-http-intercept";
 import {MatAutocompleteModule, MatChipsModule, MatFormFieldModule, MatIconModule} from "@angular/material";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {ErrorsHandler} from "./_error-handler/errors-handler";
 import {Subject} from "rxjs/Subject";
 import {AddCategoryComponent} from './add-category/add-category.component';
+import {GlobalErrorHandler} from "./_error-handler/global.error.handler";
+import {HANDLERS} from "./_error-handler/http.error.handler.interface";
+import {SyntaxErrorHandler} from "./_error-handler/syntax.error.handler";
+import {TimeoutErrorHandler} from "./_error-handler/timeout.error.handler";
+import {UnauthorizedErrorHandler} from "./_error-handler/unuathorized.error.handler";
+import {DefaultHttpCodesErrorHandler} from "./_error-handler/default.httpcode.handler";
+import {SimpleNotificationsModule} from 'angular2-notifications';
 
 const appInitializer = (appConfig: ConfigService) => {
   return () => {
@@ -54,9 +63,11 @@ const appInitializer = (appConfig: ConfigService) => {
     MatIconModule,
     MatFormFieldModule,
     MatAutocompleteModule,
+    BrowserAnimationsModule,
+    SimpleNotificationsModule.forRoot(),
     BrowserAnimationsModule
 
-
+SimpleNotificationsModule.forRoot()
   ],
 
   providers: [
@@ -74,14 +85,27 @@ const appInitializer = (appConfig: ConfigService) => {
     TokenService,
     StuffService,
     UserService,
+    SyntaxErrorHandler,
+    TimeoutErrorHandler,
+    DefaultHttpCodesErrorHandler,
+    UnauthorizedErrorHandler,
     {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthHttpIntercept,
-      multi: true
+      provide: HTTP_INTERCEPTORS, useClass: AuthHttpIntercept, multi: true
     },
     {
-      provide: ErrorHandler,
-      useClass: ErrorsHandler,
+      provide: ErrorHandler, useClass: GlobalErrorHandler,
+    }
+    , {
+      provide: HANDLERS, useClass: SyntaxErrorHandler, multi: true
+    },
+    {
+      provide: HANDLERS, useClass: TimeoutErrorHandler, multi: true
+    },
+    {
+      provide: HANDLERS, useClass: UnauthorizedErrorHandler, multi: true
+    },
+    {
+      provide: HANDLERS, useClass: DefaultHttpCodesErrorHandler, multi: true
     }
   ],
   bootstrap: [AppComponent]
