@@ -38,7 +38,9 @@ public class SecurityControllerAdvice {
     }
 
     private ResponseEntity<String> createError(String errorCode) {
-        String errorMessage = messageSource.getMessage(errorCode, new Object[]{}, Locale.getDefault());
+        String errorMessage = messageSource.getMessage(errorCode,
+                new Object[]{},
+                Locale.getDefault());
         return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.UNAUTHORIZED);
     }
 

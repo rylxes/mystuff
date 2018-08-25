@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.webtree.mystuff.common.utils.TimeProvider;
-import org.webtree.mystuff.domain.User;
+import org.webtree.mystuff.model.domain.User;
 
 import java.util.Date;
 import java.util.HashMap;

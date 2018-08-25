@@ -2,8 +2,8 @@ package org.webtree.mystuff.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.webtree.mystuff.AbstractSpringTest;
-import org.webtree.mystuff.domain.Category;
-import org.webtree.mystuff.domain.User;
+import org.webtree.mystuff.model.domain.Category;
+import org.webtree.mystuff.model.domain.User;
 
 public abstract class AbstractServiceTest extends AbstractSpringTest {
     @Autowired

@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
-import org.webtree.mystuff.domain.User;
+import org.webtree.mystuff.model.domain.User;
 import org.webtree.mystuff.service.UserService;
 
 import static org.assertj.core.api.Assertions.assertThat;

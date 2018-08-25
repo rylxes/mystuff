@@ -1,11 +1,11 @@
-package org.webtree.mystuff.restModel;
+package org.webtree.mystuff.model.rest;
 
 import lombok.Builder;
 import lombok.Data;
-import org.webtree.mystuff.domain.Stuff;
+import org.webtree.mystuff.model.domain.Stuff;
 
-import javax.validation.constraints.NotNull;
 import java.util.Set;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder

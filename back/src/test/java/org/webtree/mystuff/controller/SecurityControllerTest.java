@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
-import org.webtree.mystuff.domain.User;
+import org.webtree.mystuff.model.domain.User;
 import org.webtree.mystuff.security.JwtTokenUtil;
 import org.webtree.mystuff.service.UserService;
 

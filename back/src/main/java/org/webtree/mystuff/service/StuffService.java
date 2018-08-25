@@ -1,10 +1,11 @@
 package org.webtree.mystuff.service;
 
 import com.google.common.base.Preconditions;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.webtree.mystuff.domain.Stuff;
+import org.webtree.mystuff.model.domain.Stuff;
 import org.webtree.mystuff.repository.StuffRepository;
 
 import java.util.Set;
@@ -21,7 +22,7 @@ public class StuffService {
     }
 
     /**
-     * Save stuff and dependencies
+     * Save stuff and dependencies.
      */
     public Stuff save(Stuff stuff) {
         return stuffRepository.save(stuff);
@@ -38,8 +39,10 @@ public class StuffService {
     @Transactional
     public Stuff create(Stuff stuff, Long creator, Set<Long> categories) {
         Preconditions.checkArgument(stuff.getId() == null, "You can't create stuff with id");
-        Preconditions.checkArgument(stuff.getCreator() == null, "Creator should be given in parameters");
-        Preconditions.checkArgument(stuff.getCategories() == null || stuff.getCategories().isEmpty(), "Categories should be given in parameters");
+        Preconditions.checkArgument(stuff.getCreator() == null,
+            "Creator should be given in parameters");
+        Preconditions.checkArgument(stuff.getCategories() == null || stuff.getCategories().isEmpty(),
+            "Categories should be given in parameters");
 
         stuff = stuffRepository.save(stuff, 0);
         stuffRepository.addRelationshipsWithCategories(categories, stuff.getId());

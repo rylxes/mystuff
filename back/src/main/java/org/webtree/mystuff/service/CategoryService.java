@@ -1,9 +1,10 @@
 package org.webtree.mystuff.service;
 
 import com.google.common.collect.Sets;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.webtree.mystuff.domain.Category;
+import org.webtree.mystuff.model.domain.Category;
 import org.webtree.mystuff.repository.CategoryRepository;
 
 import java.util.List;
