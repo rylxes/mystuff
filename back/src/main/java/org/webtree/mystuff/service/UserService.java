@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.webtree.mystuff.domain.User;
+import org.webtree.mystuff.model.domain.User;
 import org.webtree.mystuff.repository.UserRepository;
 
 @Service

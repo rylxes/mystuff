@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.webtree.mystuff.AbstractSpringTest;
 import org.webtree.mystuff.boot.App;
-import org.webtree.mystuff.domain.User;
+import org.webtree.mystuff.model.domain.User;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

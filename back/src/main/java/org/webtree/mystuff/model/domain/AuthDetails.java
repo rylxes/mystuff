@@ -1,4 +1,4 @@
-package org.webtree.mystuff.domain;
+package org.webtree.mystuff.model.domain;
 
 import lombok.Data;
 import lombok.Getter;

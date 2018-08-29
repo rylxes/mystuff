@@ -1,4 +1,6 @@
-package org.webtree.mystuff.domain;
+package org.webtree.mystuff.model.domain;
+
+import static org.neo4j.ogm.annotation.Relationship.INCOMING;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,8 +9,6 @@ import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.neo4j.ogm.annotation.Relationship;
-
-import static org.neo4j.ogm.annotation.Relationship.INCOMING;
 
 /**
  * Created by Udjin on 01.03.2018.

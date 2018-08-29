@@ -1,6 +1,7 @@
 package org.webtree.mystuff.boot;
 
 import com.google.common.base.Strings;
+
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.config.DriverConfiguration;
 import org.neo4j.ogm.session.SessionFactory;
@@ -23,7 +24,7 @@ public class Neo4jConfig extends Neo4jConfiguration {
 
     @Override
     public SessionFactory getSessionFactory() {
-        return new SessionFactory(configuration(), "org.webtree.mystuff.domain");
+        return new SessionFactory(configuration(), "org.webtree.mystuff.model.domain");
     }
 
     @Bean
