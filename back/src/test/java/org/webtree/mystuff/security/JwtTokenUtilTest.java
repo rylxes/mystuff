@@ -1,5 +1,10 @@
 package org.webtree.mystuff.security;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.within;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import org.assertj.core.util.DateUtil;
 import org.junit.Before;
@@ -14,11 +19,6 @@ import org.webtree.mystuff.model.domain.User;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.within;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Created by stephan on 10.09.16.
@@ -149,7 +149,7 @@ public class JwtTokenUtilTest {
         final DeviceDummy device = new DeviceDummy();
         device.setNormal(true);
 
-        return jwtTokenUtil.generateToken(User.builder().username(TEST_USERNAME).build(), device);
+        return jwtTokenUtil.generateToken(User.Builder.create().withUsername(TEST_USERNAME).build(), device);
     }
 
 }

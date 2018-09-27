@@ -1,5 +1,20 @@
 package org.webtree.mystuff.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyLong;
+import static org.mockito.Matchers.refEq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.verify;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.google.common.collect.Sets;
 import org.junit.Rule;
@@ -19,21 +34,9 @@ import org.webtree.mystuff.service.CategoryService;
 import org.webtree.mystuff.service.StuffService;
 import org.webtree.mystuff.service.UserService;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyLong;
-import static org.mockito.Matchers.refEq;
-import static org.mockito.Mockito.*;
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WithMockCustomUser
 public class StuffControllerTest extends AbstractControllerTest {
@@ -58,11 +61,11 @@ public class StuffControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenAddStuff_shouldReturnNewId() throws Exception {
-        Stuff stuff = Stuff.builder().name(NAME).build();
+        Stuff stuff = Stuff.Builder.create().withName(NAME).build();
         mockMvc.perform(
             post("/rest/stuff")
                 .contentType(APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(CreateStuff.builder().stuff(stuff).build()))
+                .content(objectMapper.writeValueAsString(CreateStuff.Builder.create().withStuff(stuff).build()))
         )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors").doesNotExist())
@@ -72,7 +75,7 @@ public class StuffControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenGetStuff_shouldReturnItFromService() throws Exception {
-        stuffService.save(Stuff.builder().id(1L).name(NAME).build());
+        stuffService.save(Stuff.Builder.create().withId(1L).withName(NAME).build());
         mockMvc.perform(get("/rest/stuff/1").contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors").doesNotExist())
@@ -138,7 +141,7 @@ public class StuffControllerTest extends AbstractControllerTest {
     @WithAnonymousUser
     public void whenAddExistingStuff_shouldReturnForBothUsers() throws Exception {
         Stuff stuff = stuffService.save(buildNewStuff(NAME, USER_1));
-        User user2 = userService.add(User.builder().username(USER_2).password("pass").build());
+        User user2 = userService.add(User.Builder.create().withUsername(USER_2).withPassword("pass").build());
         MvcResult mvcResult = mockMvc.perform(
             post("/rest/token/new")
                 .contentType(APPLICATION_JSON)
@@ -163,9 +166,9 @@ public class StuffControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenAddStuffCategory_shouldSaveCorrect() throws Exception {
-        CreateStuff createStuff = CreateStuff.builder()
-            .stuff(Stuff.builder().name(NAME).build())
-            .categories(buildNewStaffCategories(CATEGORY1, CATEGORY2).stream().map(Category::getId).collect(Collectors.toSet()))
+        CreateStuff createStuff = CreateStuff.Builder.create()
+            .withStuff(Stuff.Builder.create().withName(NAME).build())
+            .withCategories(buildNewStaffCategories(CATEGORY1, CATEGORY2).stream().map(Category::getId).collect(Collectors.toSet()))
             .build();
         MvcResult mvcResult = mockMvc.perform(
             post("/rest/stuff")
@@ -200,11 +203,11 @@ public class StuffControllerTest extends AbstractControllerTest {
     public void whenRequestCategoriesBySearchString_shouldReturnCorrect() throws Exception {
         String query = "cat";
         User user = addUser();
-        Category sc1 = categoryService.save(Category.builder().name("ater").creator(user).build());
-        Category sc2 = categoryService.save(Category.builder().name("catfg").creator(user).build());
-        Category sc3 = categoryService.save(Category.builder().name("cat").creator(user).build());
-        Category sc4 = categoryService.save(Category.builder().name("catui").creator(user).build());
-        Category sc5 = categoryService.save(Category.builder().name("catgf").creator(user).build());
+        Category sc1 = categoryService.save(Category.Builder.create().withName("ater").withCreator(user).build());
+        Category sc2 = categoryService.save(Category.Builder.create().withName("catfg").withCreator(user).build());
+        Category sc3 = categoryService.save(Category.Builder.create().withName("cat").withCreator(user).build());
+        Category sc4 = categoryService.save(Category.Builder.create().withName("catui").withCreator(user).build());
+        Category sc5 = categoryService.save(Category.Builder.create().withName("catgf").withCreator(user).build());
 
         mockMvc.perform(get("/rest/stuff/category/names?startsFrom=" + query).contentType(APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -217,10 +220,10 @@ public class StuffControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenAddStuffWithCategories_shouldCallCreateOnService() throws Exception {
-        Stuff stuff = Stuff.builder().name(NAME).build();
+        Stuff stuff = Stuff.Builder.create().withName(NAME).build();
         Set<Long> categories = Sets.newHashSet(1L, 2L, 3L);
         mockMvc.perform(post("/rest/stuff").contentType(APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(CreateStuff.builder().stuff(stuff).categories(categories).build()))
+            .content(objectMapper.writeValueAsString(CreateStuff.Builder.create().withStuff(stuff).withCategories(categories).build()))
         );
         verify(stuffService).create(refEq(stuff, "id", "categories"), anyLong(), categoriesCaptor.capture());
         assertThat(categoriesCaptor.getValue()).isEqualTo(categories);
@@ -228,7 +231,7 @@ public class StuffControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenAddExistingCategory_shouldReturnIt_andDonNotTryToCreate() throws Exception {
-        Category category = categoryService.save(Category.builder().name(CATEGORY1).build());
+        Category category = categoryService.save(Category.Builder.create().withName(CATEGORY1).build());
         reset(categoryService);
         mockMvc.perform(post("/rest/stuff/category")
             .contentType(APPLICATION_JSON)
@@ -241,14 +244,14 @@ public class StuffControllerTest extends AbstractControllerTest {
     }
 
     private Stuff buildNewStuff(String name, String username) {
-        return Stuff.builder().users(buildNewUsers(username)).name(name).build();
+        return Stuff.Builder.create().withUsers(buildNewUsers(username)).withName(name).build();
     }
 
-    private List<Category> buildNewStaffCategories(String... categoryNames) {
+    private Set<Category> buildNewStaffCategories(String... categoryNames) {
         User user = addUser();
-        List<Category> categories = new ArrayList<>();
+        Set<Category> categories = new HashSet<>();
         for (String categoryName : categoryNames) {
-            Category category = categoryService.save(Category.builder().name(categoryName).creator(user).build());
+            Category category = categoryService.save(Category.Builder.create().withName(categoryName).withCreator(user).build());
             categories.add(category);
         }
         return categories;
@@ -256,17 +259,17 @@ public class StuffControllerTest extends AbstractControllerTest {
     }
 
     private User addUser() {
-        return userService.add(User.builder().username(USER_1).build());
+        return userService.add(User.Builder.create().withUsername(USER_1).build());
     }
 
     private Set<User> buildNewUsers(String username) {
-        return Sets.newHashSet(userService.add(User.builder().username(username).build()));
+        return Sets.newHashSet(userService.add(User.Builder.create().withUsername(username).build()));
     }
 
 
-    private Stuff buildNewStuffWithStaffCategory(String name, String username, List<Category> categories) {
-        return Stuff.builder().users(buildNewUsers(username)).name(name)
-            .categories(categories).build();
+    private Stuff buildNewStuffWithStaffCategory(String name, String username, Set<Category> categories) {
+        return Stuff.Builder.create().withUsers(buildNewUsers(username)).withName(name)
+            .withCategories(categories).build();
     }
 
 

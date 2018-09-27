@@ -1,5 +1,8 @@
 package org.webtree.mystuff.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
+
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,9 +18,6 @@ import org.webtree.mystuff.model.domain.Category;
 import org.webtree.mystuff.model.domain.User;
 
 import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.containsString;
 
 
 @RunWith(SpringRunner.class)
@@ -62,11 +62,11 @@ public class CategoryServiceTest extends AbstractSpringTest {
     @Test
     public void whenSaveCategoryWhichAlreadyExist_shouldThrowException() {
         categoryService.save(createCategory(CATEGORY1));
-        User newUser = userService.add(User.builder().username("newUsername").build());
+        User newUser = userService.add(User.Builder.create().withUsername("newUsername").build());
 
         exception.expect(CypherException.class);
         exception.expectMessage("already exists with label");
-        categoryService.save(Category.builder().name(CATEGORY1).creator(newUser).build());
+        categoryService.save(Category.Builder.create().withName(CATEGORY1).withCreator(newUser).build());
     }
 
     //Test for @IndexCreator Unique Constraint
@@ -85,10 +85,10 @@ public class CategoryServiceTest extends AbstractSpringTest {
     }
 
     private User addUser() {
-        return userService.add(User.builder().username(USERNAME).build());
+        return userService.add(User.Builder.create().withUsername(USERNAME).build());
     }
 
     private Category createCategory(String name) {
-        return Category.builder().creator(addUser()).name(name).build();
+        return Category.Builder.create().withCreator(addUser()).withName(name).build();
     }
 }

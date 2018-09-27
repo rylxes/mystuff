@@ -1,5 +1,7 @@
 package org.webtree.mystuff.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.common.collect.Sets;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,8 +15,6 @@ import org.webtree.mystuff.model.domain.Stuff;
 import org.webtree.mystuff.model.domain.User;
 
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
@@ -31,8 +31,8 @@ public class StuffRepositoryTest extends AbstractSpringTest {
 
     @Test
     public void shouldAddCategoryRelationship() {
-        Stuff stuff = stuffRepository.save(Stuff.builder().name(STUFF_NAME).build());
-        Category category = categoryRepository.save(Category.builder().name(CATEGORY_NAME).build());
+        Stuff stuff = stuffRepository.save(Stuff.Builder.create().withName(STUFF_NAME).build());
+        Category category = categoryRepository.save(Category.Builder.create().withName(CATEGORY_NAME).build());
         stuffRepository.addRelationshipsWithCategories(Sets.newHashSet(category.getId()), stuff.getId());
 
         Stuff stuffInRepo = stuffRepository.findOne(stuff.getId());
@@ -43,8 +43,8 @@ public class StuffRepositoryTest extends AbstractSpringTest {
 
     @Test
     public void shouldAddUsersRelationship() {
-        Stuff stuff = stuffRepository.save(Stuff.builder().name(STUFF_NAME).build());
-        User user = userRepository.save(User.builder().username(USER_NAME).build());
+        Stuff stuff = stuffRepository.save(Stuff.Builder.create().withName(STUFF_NAME).build());
+        User user = userRepository.save(User.Builder.create().withUsername(USER_NAME).build());
         stuffRepository.addRelationshipsWithUsers(Sets.newHashSet(user.getId()), stuff.getId());
 
         Set<User> categories = stuffRepository.findOne(stuff.getId()).getUsers();
@@ -54,8 +54,8 @@ public class StuffRepositoryTest extends AbstractSpringTest {
 
     @Test
     public void shouldAddCreateRelation() {
-        Stuff stuff = stuffRepository.save(Stuff.builder().name(STUFF_NAME).build());
-        User user = userRepository.save(User.builder().username(USER_NAME).build());
+        Stuff stuff = stuffRepository.save(Stuff.Builder.create().withName(STUFF_NAME).build());
+        User user = userRepository.save(User.Builder.create().withUsername(USER_NAME).build());
         stuffRepository.addCreateRelationship(user.getId(), stuff.getId());
 
         assertThat(stuffRepository.findOne(stuff.getId()).getCreator()).isEqualTo(user);

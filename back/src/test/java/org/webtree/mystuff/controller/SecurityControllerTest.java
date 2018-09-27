@@ -1,5 +1,11 @@
 package org.webtree.mystuff.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +19,6 @@ import org.webtree.mystuff.security.JwtTokenUtil;
 import org.webtree.mystuff.service.UserService;
 
 import java.util.Locale;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class SecurityControllerTest extends AbstractControllerTest {
     private static final String TEST_USERNAME = "testUser";
@@ -36,7 +36,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenLoginWithCorrectUser_shouldReturnValidToken() throws Exception {
-        User user = User.builder().username(TEST_USERNAME).password(TEST_PASS).build();
+        User user = User.Builder.create().withUsername(TEST_USERNAME).withPassword(TEST_PASS).build();
         userService.add(user);
 
         MvcResult mvcResult = mockMvc.perform(
@@ -60,7 +60,7 @@ public class SecurityControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenLoginWithIncorrectUsername_shouldReturnErrorMessage() throws Exception {
-        User wrongUsernameUser = User.builder().username("wrong").password(TEST_PASS).build();
+        User wrongUsernameUser = User.Builder.create().withUsername("wrong").withPassword(TEST_PASS).build();
 
         ResultActions actions = mockMvc.perform(
             post("/rest/token/new")
@@ -73,9 +73,9 @@ public class SecurityControllerTest extends AbstractControllerTest {
 
     @Test
     public void whenLoginWithIncorrectPassword_shouldReturnErrorMessage() throws Exception {
-        User user = User.builder().username(TEST_USERNAME).password(TEST_PASS).build();
+        User user = User.Builder.create().withUsername(TEST_USERNAME).withPassword(TEST_PASS).build();
         userService.add(user);
-        User wrongPasswordUser = User.builder().username(TEST_USERNAME).password("123").build();
+        User wrongPasswordUser = User.Builder.create().withUsername(TEST_USERNAME).withPassword("123").build();
 
         ResultActions actions = mockMvc.perform(
             post("/rest/token/new")

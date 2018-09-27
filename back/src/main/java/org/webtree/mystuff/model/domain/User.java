@@ -1,9 +1,5 @@
 package org.webtree.mystuff.model.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.GraphId;
 import org.neo4j.ogm.annotation.NodeEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,33 +8,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Date;
 
-@Data
 @NodeEntity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class User implements UserDetails {
     private static final long serialVersionUID = -1640162851205761563L;
     @GraphId
-    @Builder.Default
     private Long id = null;
     private String username;
     private String password;
-    @Builder.Default
-    private boolean accountNotExpired = true;
-    @Builder.Default
-    private boolean accountNonLocked = true;
-    @Builder.Default
-    private boolean credentialsNonExpired = true;
-    @Builder.Default
-    private boolean enabled = true;
     private Date lastPasswordResetDate;
 
     public User enable() {
-        accountNonLocked = true;
-        accountNotExpired = true;
-        credentialsNonExpired = true;
-        enabled = true;
         return this;
     }
 
@@ -63,25 +42,68 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return accountNotExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return accountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return enabled;
+        return true;
     }
 
     public Date getLastPasswordResetDate() {
         return lastPasswordResetDate;
+    }
+
+    public static final class Builder {
+        private Long id = null;
+        private String username;
+        private String password;
+        private Date lastPasswordResetDate;
+
+        private Builder() {
+        }
+
+        public static Builder create() {
+            return new Builder();
+        }
+
+        public Builder withId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder withUsername(String username) {
+            this.username = username;
+            return this;
+        }
+
+        public Builder withPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder withLastPasswordResetDate(Date lastPasswordResetDate) {
+            this.lastPasswordResetDate = lastPasswordResetDate;
+            return this;
+        }
+
+        public User build() {
+            User user = new User();
+            user.username = this.username;
+            user.id = this.id;
+            user.password = this.password;
+            user.lastPasswordResetDate = this.lastPasswordResetDate;
+            return user;
+        }
     }
 }

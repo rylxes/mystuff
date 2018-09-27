@@ -14,11 +14,11 @@ public abstract class AbstractServiceTest extends AbstractSpringTest {
     protected CategoryService categoryService;
 
     protected Category createCategory(String categoryName) {
-        return Category.builder().name(categoryName).build();
+        return Category.Builder.create().withName(categoryName).build();
     }
 
     private User createUser(String username) {
-        return User.builder().username(username).build();
+        return User.Builder.create().withUsername(username).build();
     }
 
     protected User addUser(String username) {

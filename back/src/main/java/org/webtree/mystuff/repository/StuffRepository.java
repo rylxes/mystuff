@@ -3,12 +3,14 @@ package org.webtree.mystuff.repository;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.neo4j.repository.GraphRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.webtree.mystuff.model.domain.Stuff;
 
 import java.util.List;
 import java.util.Set;
 
+@Repository
 @Transactional
 public interface StuffRepository extends GraphRepository<Stuff> {
 

@@ -1,5 +1,10 @@
 package org.webtree.mystuff.controller;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -8,11 +13,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.webtree.mystuff.model.domain.User;
 import org.webtree.mystuff.service.UserService;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserControllerTest extends AbstractControllerTest {
     private static final String USERNAME = "testUser";
@@ -27,7 +27,7 @@ public class UserControllerTest extends AbstractControllerTest {
     public void whenRegisterUser_shouldCreateNewOne() throws Exception {
         mockMvc.perform(post("/rest/user/register")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(User.builder().username(USERNAME).build()))
+            .content(objectMapper.writeValueAsString(User.Builder.create().withUsername(USERNAME).build()))
         )
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors").doesNotExist());

@@ -49,9 +49,9 @@ public class StuffController {
         if (category != null) {
             return category;
         } else {
-            return categoryService.save(Category.builder()
-                .creator((User) authentication.getPrincipal())
-                .name(categoryName)
+            return categoryService.save(Category.Builder.create()
+                .withCreator((User) authentication.getPrincipal())
+                .withName(categoryName)
                 .build());
         }
     }

@@ -1,5 +1,7 @@
 package org.webtree.mystuff.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import com.google.common.collect.Sets;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -14,8 +16,6 @@ import org.webtree.mystuff.model.domain.User;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
@@ -40,7 +40,7 @@ public class StuffServiceTest extends AbstractServiceTest {
         Category sc1 = createCategory(CATEGORY_1);
         Category sc2 = createCategory(CATEGORY_2);
         assertThat(stuffService.getById(ID)).isNull();
-        Stuff stuff = Stuff.builder().name(NAME).category(sc1).category(sc2).build();
+        Stuff stuff = Stuff.Builder.create().withName(NAME).withCategories(Set.of(sc1, sc2)).build();
         Stuff addedStuff = stuffService.save(stuff);
         assertThat(addedStuff.getId()).isNotNull();
         Stuff byId = stuffService.getById(addedStuff.getId());
@@ -51,7 +51,7 @@ public class StuffServiceTest extends AbstractServiceTest {
 
     @Test
     public void whenCreate_shouldReturnItWithId() {
-        Stuff stuff = stuffService.create(Stuff.builder().name(NAME).build(), existingUserId(), existingCategoryId());
+        Stuff stuff = stuffService.create(Stuff.Builder.create().withName(NAME).build(), existingUserId(), existingCategoryId());
         assertThat(stuff).isNotNull();
         assertThat(stuff.getId()).isGreaterThan(-1);
         assertThat(stuff.getCategories()).isEmpty();
@@ -59,23 +59,23 @@ public class StuffServiceTest extends AbstractServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void whenTryToCreateStuffWithId_shouldThrowException() {
-        stuffService.create(Stuff.builder().id(1L).name(NAME).build(), existingUserId(), existingCategoryId());
+        stuffService.create(Stuff.Builder.create().withId(1L).withName(NAME).build(), existingUserId(), existingCategoryId());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenTryToCreateWithCreator_shouldThrowException() {
-        stuffService.create(Stuff.builder().name(NAME).creator(User.builder().build()).build(), existingUserId(), existingCategoryId());
+        stuffService.create(Stuff.Builder.create().withName(NAME).withCreator(User.Builder.create().build()).build(), existingUserId(), existingCategoryId());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void whenTryToCreateWithCategory_shouldThrowException() {
-        stuffService.create(Stuff.builder().name(NAME).category(Category.builder().build()).build(), existingUserId(), existingCategoryId());
+        stuffService.create(Stuff.Builder.create().withName(NAME).addCategory(Category.Builder.create().build()).build(), existingUserId(), existingCategoryId());
     }
 
     @Test
     public void whenCreateWithCategories_shouldHaveRelationship() {
         Stuff stuff = stuffService.create(
-            Stuff.builder().name(NAME).build(),
+            Stuff.Builder.create().withName(NAME).build(),
             existingUserId(),
             existingCategoryId());
         Set<Category> categories = stuffService.getById(stuff.getId()).getCategories();
@@ -86,7 +86,7 @@ public class StuffServiceTest extends AbstractServiceTest {
     @Test
     public void whenCreateWithCreator_shouldHaveRelationship() {
         Stuff stuff = stuffService.create(
-            Stuff.builder().name(NAME).build(),
+            Stuff.Builder.create().withName(NAME).build(),
             existingUserId(),
             existingCategoryId());
         User creator = stuffService.getById(stuff.getId()).getCreator();
@@ -96,7 +96,7 @@ public class StuffServiceTest extends AbstractServiceTest {
     @Test
     public void whenCreateWithCreator_shouldUse() {
         Stuff stuff = stuffService.create(
-            Stuff.builder().name(NAME).build(),
+            Stuff.Builder.create().withName(NAME).build(),
             existingUserId(),
             existingCategoryId());
         Set<User> users = stuffService.getById(stuff.getId()).getUsers();

@@ -1,7 +1,6 @@
 package org.webtree.mystuff.boot;
 
 import com.google.common.base.Strings;
-
 import org.neo4j.ogm.config.Configuration;
 import org.neo4j.ogm.config.DriverConfiguration;
 import org.neo4j.ogm.session.SessionFactory;

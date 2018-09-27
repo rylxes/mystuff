@@ -1,5 +1,7 @@
 package org.webtree.mystuff.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -10,8 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.webtree.mystuff.AbstractSpringTest;
 import org.webtree.mystuff.boot.App;
 import org.webtree.mystuff.model.domain.User;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = App.class)
@@ -46,6 +46,6 @@ public class UserServiceTest extends AbstractSpringTest {
     }
 
     private User addUser() {
-        return userService.add(User.builder().username(USERNAME).build());
+        return userService.add(User.Builder.create().withUsername(USERNAME).build());
     }
 }
