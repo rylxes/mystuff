@@ -2,29 +2,29 @@
 ##Backend (back subfolder)
 ###Maven
 * Create jars
-```bash
+```
 mnvw package
 ```
 * Build docker image
-```bash
+```
 mvnw dockerfile:build
 ``` 
 ##Frontend (*web subfolder*)
 ###Maven
 * Build docker image
-```bash
+```
 mvnw dockerfile:build
 ```
 ###Command line
 * Preparations
     * Install npm ([instruction](https://www.npmjs.com/get-npm)).
     * Install angular cli. You can install it by execute command:
-    ```bash
+    ```
     npm install -g @angular/cli
     ```
 * Build 
     * Installed npm modules
-    ```bash
+    ```
     npm i
     ```
 
@@ -32,7 +32,7 @@ mvnw dockerfile:build
 #Run application
 ##Docker
 ###Web+back+neo4j
-```bash
+```
 docker-compose up
 ```
 ##Backend
@@ -44,11 +44,11 @@ For more information about setting spring boot properties please read [spring do
 ##Frontend 
 ###Command line (require build from command line)
 * For run just execute command
-```bash
+```
 ng serve
 ```
 * For run tests:
-```bash
+```
 ng test
 ```
 
