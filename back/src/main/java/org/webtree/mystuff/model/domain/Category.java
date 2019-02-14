@@ -17,6 +17,8 @@ public class Category {
     @Relationship(type = "create", direction = INCOMING)
     private User creator;
 
+    public Category() {}
+
     public Category(Long id, String name, User creator) {
         this.id = id;
         this.name = name;
