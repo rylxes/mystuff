@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatAutocompleteSelectedEvent, MatChipInputEvent, MatInput} from "@angular/material";
+import {MatAutocompleteSelectedEvent, MatChipInputEvent, MatInput, MatAutocomplete} from "@angular/material";
 import {Category} from "../_models/Category";
 import {FormBuilder, FormControl} from "@angular/forms";
 import {COMMA, ENTER} from "@angular/cdk/keycodes";
@@ -12,6 +12,7 @@ import {StuffService} from "../_services/stuff.service";
 })
 export class AddCategoryComponent implements OnInit {
   @ViewChild('matInput') matInput: MatInput;
+  @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   categories: Map<string, Category> = new Map<string, Category>();
   autocompleteCategories: Set<Category>;
@@ -34,7 +35,7 @@ export class AddCategoryComponent implements OnInit {
       });
   }
 
-  addCategoryFromAutocomplete(event: MatAutocompleteSelectedEvent) {
+  addCategoryFromAutocomplete(event: MatAutocompleteSelectedEvent): void {
     console.log("addCategoryFromAutocomplete");
     const category: Category = event.option.value;
     this.addCategory(category);
@@ -53,19 +54,20 @@ export class AddCategoryComponent implements OnInit {
   }
 
   add(event: MatChipInputEvent): void {
-    console.log("add");
-    let name = event.value.trim();
-    if (!name) {
-      return;
-    }
-    let category = this.findExistingCategory(name);
-    if (!category) {
-      this.persistCategory(name)
-    } else {
-      this.addCategory(category);
-    }
+    if (!this.matAutocomplete.isOpen) {
+      console.log("add");
+      let name = event.value.trim();
 
-    this.resetForm(event.input);
+      if (name || '') {
+        let category = this.findExistingCategory(name);
+        if (!category) {
+          this.persistCategory(name);
+        } else {
+          this.addCategory(category);
+        }
+        this.resetForm(event.input);
+      }
+    }
   }
 
   getCategories(): Category[] {
