@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mystuff.name.web" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "mystuff.name.web" . }}
+    helm.sh/chart: {{ include "mystuff.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "mystuff.name.web" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "mystuff.name.web" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.images.web.repository }}:{{ .Values.images.web.tag }}"
+          imagePullPolicy: {{ .Values.images.web.pullPolicy }}
+          ports:
+            - name: web
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /
+              port: web
+          readinessProbe:
+            httpGet:
+              path: /
+              port: web
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: {{ include "mystuff.name.back" . }}
+    labels:
+        app.kubernetes.io/name: {{ include "mystuff.name.back" . }}
+        helm.sh/chart: {{ include "mystuff.chart" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+    replicas: {{ .Values.replicaCount }}
+    selector:
+        matchLabels:
+            app.kubernetes.io/name: {{ include "mystuff.name.back" . }}
+            app.kubernetes.io/instance: {{ .Release.Name }}
+    template:
+        metadata:
+            labels:
+                app.kubernetes.io/name: {{ include "mystuff.name.back" . }}
+                app.kubernetes.io/instance: {{ .Release.Name }}
+        spec:
+            containers:
+              - name: {{ .Chart.Name }}
+                image: "{{ .Values.images.back.repository }}:{{ .Values.images.back.tag }}"
+                imagePullPolicy: {{ .Values.images.back.pullPolicy }}
+                ports:
+                  - name: back
+                    containerPort: 9000
+                    protocol: TCP
+                livenessProbe:
+                  httpGet:
+                      path: /
+                      port: back
+                readinessProbe:
+                  httpGet:
+                      path: /
+                      port: back
+            {{- with .Values.nodeSelector }}
+            nodeSelector:
+              {{- toYaml . | nindent 8 }}
+              {{- end }}
+              {{- with .Values.affinity }}
+            affinity:
+              {{- toYaml . | nindent 8 }}
+              {{- end }}
+              {{- with .Values.tolerations }}
+            tolerations:
+            {{- toYaml . | nindent 8 }}
+            {{- end }}
