@@ -8,6 +8,9 @@ Expand the name of the chart.
 {{- define "mystuff.name.back" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}-back
 {{- end -}}
+{{- define "mystuff.name.neo4j" -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}-neo4j
+{{- end -}}
 
 {{/*
 Create a default fully qualified app name.
@@ -32,4 +35,9 @@ Create chart name and version as used by the chart label.
 */}}
 {{- define "mystuff.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "neo4j.secrets.fullname" -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- printf "%s-%s-secrets" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}

@@ -59,3 +59,13 @@ nodeSelector:
 tolerations: []
 
 affinity: {}
+
+neo4j:
+  imageTag: 3.5.3
+  core:
+    numberOfServers: 1
+    persistentVolume:
+      size: 1Gi
+  authEnabled: true
+  neo4jPassword: "CHANGEME"
+  replicaCount: 1
