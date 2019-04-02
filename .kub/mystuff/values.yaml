@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+replicaCount: 2
 
 images:
   web:
@@ -30,8 +30,8 @@ ingress:
     host: mystuff.dev.webtree.org
     path: /
   back:
-    host: mystuff.dev.webtree.org
-    path: /api/
+    host: back.mystuff.dev.webtree.org
+    path: /
 
   tls: []
   #  - secretName: chart-example-tls

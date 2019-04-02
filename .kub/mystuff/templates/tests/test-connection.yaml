@@ -14,7 +14,7 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "mystuff.fullname" . }}:{{ .Values.service.port }}']
+      args:  ['{{ include "mystuff.name.web" . }}:{{ .Values.service.port }}']
   restartPolicy: Never
 ---
 apiVersion: v1
@@ -33,5 +33,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args:  ['{{ include "mystuff.fullname" . }}:{{ .Values.service.port }}']
+      args:  ['{{ include "mystuff.name.back" . }}:{{ .Values.service.port }}']
   restartPolicy: Never

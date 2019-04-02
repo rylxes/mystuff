@@ -13,6 +13,11 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "mystuff.name.web" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
       labels:
@@ -23,6 +28,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.images.web.repository }}:{{ .Values.images.web.tag }}"
           imagePullPolicy: {{ .Values.images.web.pullPolicy }}
+          env:
+            - name: back_url
+              value: https://{{ .Values.ingress.back.host }}{{ .Values.ingress.back.path }}
           ports:
             - name: web
               containerPort: 80
@@ -97,3 +105,4 @@ spec:
       tolerations:
       {{- toYaml . | nindent 8 }}
   {{- end }}
+
