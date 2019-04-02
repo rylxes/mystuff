@@ -20,7 +20,7 @@ export class UserService {
   // }
 
   create(user: User): Observable<User> {
-    return this.http.post<User>(this.config.getBackUrl() + '/rest/user/register', user);
+    return this.http.post<User>(this.config.getBackUrl() + 'rest/user/register', user);
   }
 
   // update(user: User) {

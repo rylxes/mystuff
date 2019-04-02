@@ -30,7 +30,7 @@ describe('UserService', () => {
         expect(user).toEqual(jasmine.objectContaining(testUser));
       }
     );
-    const req = httpMock.expectOne(configService.getBackUrl() + '/rest/user/register');
+    const req = httpMock.expectOne(configService.getBackUrl() + 'rest/user/register');
     expect(req.request.method).toEqual('POST');
     expect(req.request.body).toEqual(testUser);
     req.flush(testUser);

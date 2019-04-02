@@ -33,7 +33,7 @@ describe('AuthenticationService', () => {
 
     authService.login(testUserName, testPassword).subscribe(() => {});
 
-    const req = httpMock.expectOne(configService.getBackUrl() + '/rest/token/new');
+    const req = httpMock.expectOne(configService.getBackUrl() + 'rest/token/new');
     expect(req.request.method).toEqual('POST');
     expect(req.request.body).toEqual(testRequestBody);
     httpMock.verify();

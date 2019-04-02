@@ -38,7 +38,7 @@ describe('StuffService', () => {
         expect(stuff).toEqual(jasmine.objectContaining(testStuff));
       }
     );
-    const req = httpMock.expectOne(configService.getBackUrl() + '/rest/stuff/' + testId);
+    const req = httpMock.expectOne(configService.getBackUrl() + 'rest/stuff/' + testId);
     expect(req.request.method).toEqual('GET');
     req.flush(testStuff);
   });
@@ -48,7 +48,7 @@ describe('StuffService', () => {
         expect(stuff).toEqual(testStuffArray);
       }
     );
-    const req = httpMock.expectOne(configService.getBackUrl() + '/rest/stuff/list');
+    const req = httpMock.expectOne(configService.getBackUrl() + 'rest/stuff/list');
     expect(req.request.method).toEqual('GET');
     req.flush(testStuffArray);
   });
@@ -58,7 +58,7 @@ describe('StuffService', () => {
         expect(stuff).toEqual(jasmine.objectContaining(testStuff));
       }
     );
-    const req = httpMock.expectOne(configService.getBackUrl() + '/rest/stuff');
+    const req = httpMock.expectOne(configService.getBackUrl() + 'rest/stuff');
     expect(req.request.method).toEqual('POST');
     expect(req.request.body).toEqual({"stuff": testStuff, categories: [1, 2, 3]});
     req.flush(testStuff);
@@ -68,7 +68,7 @@ describe('StuffService', () => {
     stuffService.delete(testId).subscribe(() => {
       }
     );
-    const req = httpMock.expectOne(configService.getBackUrl() + '/rest/stuff/' + testId);
+    const req = httpMock.expectOne(configService.getBackUrl() + 'rest/stuff/' + testId);
     expect(req.request.method).toEqual('DELETE');
   });
 });
