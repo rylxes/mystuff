@@ -17,7 +17,7 @@ export class AuthenticationService {
       password: password
     };
 
-    return this.http.post(this.config.getBackUrl() + '/rest/token/new', body, {responseType: 'text'});
+    return this.http.post(this.config.getBackUrl() + 'rest/token/new', body, {responseType: 'text'});
   }
 
   logout() {

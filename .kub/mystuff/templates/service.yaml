@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mystuff.name.web" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "mystuff.name.web" . }}
+    helm.sh/chart: {{ include "mystuff.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: web
+      protocol: TCP
+      name: web
+  selector:
+    app.kubernetes.io/name: {{ include "mystuff.name.web" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: {{ include "mystuff.name.back" . }}
+    labels:
+        app.kubernetes.io/name: {{ include "mystuff.name.back" . }}
+        helm.sh/chart: {{ include "mystuff.chart" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+    type: {{ .Values.service.type }}
+    ports:
+        - port: {{ .Values.service.port }}
+          targetPort: back
+          protocol: TCP
+          name: back
+    selector:
+        app.kubernetes.io/name: {{ include "mystuff.name.back" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mystuff.name.neo4j" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "mystuff.name.neo4j" . }}
+    helm.sh/chart: {{ include "mystuff.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+    - port: 7687
+      targetPort: bolt
+      protocol: TCP
+      name: bolt
+  selector:
+    app.kubernetes.io/name: {{ include "mystuff.name.neo4j" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

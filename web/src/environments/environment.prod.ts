@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  backUrl: 'https://back.mystuff.webtree.org'
+  backUrl: 'https://back.mystuff.webtree.org/'
 };

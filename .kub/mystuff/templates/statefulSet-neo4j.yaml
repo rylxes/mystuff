@@ -1,0 +1,90 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "mystuff.name.neo4j" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "mystuff.name.neo4j" . }}
+    helm.sh/chart: {{ include "mystuff.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.neo4j.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "mystuff.name.neo4j" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "mystuff.name.neo4j" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-neo4j
+          image: "neo4j:3.2.0"
+          imagePullPolicy: {{ .Values.images.back.pullPolicy }}
+          env:
+            - name: AUTH_ENABLED
+              value: "{{ .Values.neo4j.authEnabled }}"
+            - name: NEO4J_SECRETS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ template "neo4j.secrets.fullname" . }}
+                  key: neo4j-password
+          command:
+            - "/bin/bash"
+            - "-c"
+            - |
+              if [ "${AUTH_ENABLED:-}" == "true" ]; then
+                export NEO4J_AUTH="neo4j/${NEO4J_SECRETS_PASSWORD}"
+              else
+                export NEO4J_AUTH="none"
+              fi
+
+              exec /docker-entrypoint.sh "neo4j"
+
+          ports:
+            - name: http
+              containerPort: 7474
+              protocol: TCP
+            - containerPort: 7687
+              name: bolt
+            - containerPort: 6000
+              name: tx
+          volumeMounts:
+            - name: datadir
+              mountPath: "/data"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 1
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+  {{- toYaml . | nindent 8 }}
+  {{- end }}
+  volumeClaimTemplates:
+    - metadata:
+        name: datadir
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: "{{ .Values.neo4j.core.persistentVolume.size }}"
