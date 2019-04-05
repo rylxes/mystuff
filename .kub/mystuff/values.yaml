@@ -27,10 +27,10 @@ ingress:
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   web:
-    host: mystuff.dev.webtree.org
+    host: mystuff.webtree.org
     path: /
   back:
-    host: back.mystuff.dev.webtree.org
+    host: back.mystuff.webtree.org
     path: /
 
   tls: []
