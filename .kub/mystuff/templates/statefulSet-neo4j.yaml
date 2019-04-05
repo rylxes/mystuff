@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}-neo4j
-          image: "neo4j:3.2.0"
+          image: "neo4j:3.0"
           imagePullPolicy: {{ .Values.images.back.pullPolicy }}
           env:
             - name: AUTH_ENABLED
@@ -55,18 +55,6 @@ spec:
           volumeMounts:
             - name: datadir
               mountPath: "/data"
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-            initialDelaySeconds: 30
-            periodSeconds: 3
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-            initialDelaySeconds: 30
-            periodSeconds: 1
       {{- with .Values.nodeSelector }}
       nodeSelector:
       {{- toYaml . | nindent 8 }}
