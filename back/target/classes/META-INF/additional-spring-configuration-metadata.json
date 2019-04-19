@@ -1,0 +1,34 @@
+{
+  "properties": [
+    {
+      "name": "jwt.secret",
+      "type": "java.lang.String",
+      "description": "Description for jwt.secret."
+    },
+    {
+      "name": "jwt.header",
+      "type": "java.lang.String",
+      "description": "Description for jwt.header."
+    },
+    {
+      "name": "jwt.expiration",
+      "type": "java.lang.Integer",
+      "description": "Description for jwt.expiration."
+    },
+    {
+      "name": "jwt.route.authentication.path",
+      "type": "java.lang.String",
+      "description": "Description for jwt.route.authentication.path."
+    },
+    {
+      "name": "jwt.route.authentication.refresh",
+      "type": "java.lang.String",
+      "description": "Description for jwt.route.authentication.refresh."
+    },
+    {
+      "name": "spring.data.neo4j.driver",
+      "type": "java.lang.String",
+      "description": "Description for spring.data.neo4j.driver."
+    }
+  ]
+}
