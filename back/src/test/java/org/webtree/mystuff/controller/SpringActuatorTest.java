@@ -20,27 +20,4 @@ public class SpringActuatorTest extends AbstractControllerTest {
             .andExpect(jsonPath("$.errors").doesNotExist())
             .andExpect(jsonPath("$.status").value("UP"));
     }
-
-    @Test
-    public void whenGetInfo_shouldReturnOkResponse() throws Exception {
-        mockMvc.perform(get("/info").contentType(APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist());
-    }
-
-
-    @Test
-    public void whenGetMetrics_shouldReturnOkResponse() throws Exception {
-        mockMvc.perform(get("/metrics").contentType(APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist());
-    }
-
-
-    @Test
-    public void whenGetTrace_shouldReturnOkResponse() throws Exception {
-        mockMvc.perform(get("/trace").contentType(APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").doesNotExist());
-    }
 }
